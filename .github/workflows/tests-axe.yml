@@ -1,0 +1,52 @@
+name: Accessibility tests
+on:
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - ".github/workflows/**"
+      - "*.md"
+      - "integration/**"
+      - AUTHORS
+
+concurrency:
+  group: ci-${{ github.ref }}-a11y
+  cancel-in-progress: true
+
+env:
+  MIX_ENV: dev
+  MBTA_API_BASE_URL: ${{ secrets.MBTA_API_BASE_URL }}
+  MBTA_API_KEY: ${{ secrets.MBTA_API_KEY }}
+
+jobs:
+  axe_test:
+    name: Run accessibility tests against Docker container
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+          mask-aws-account-id: true
+      - run: docker compose --file deploy/local.yml run a11y-test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: axe-report-${{ github.sha }}
+          path: playwright-report
+          retention-days: 30
+      - name: show docker container logs
+        run: docker compose --file deploy/local.yml logs
+        if: ${{ failure() }}

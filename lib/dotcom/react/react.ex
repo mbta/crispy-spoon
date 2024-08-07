@@ -77,13 +77,18 @@ defmodule Dotcom.React do
   def dev_build(nil, _), do: :ok
 
   def dev_build(path, cmd_fn) do
-    {_, 0} =
-      cmd_fn.(
-        "npm",
-        ["run", "webpack:build:react"],
-        cd: path
-      )
+    case cmd_fn.(
+      "npm",
+      ["run", "webpack:build:react"],
+      cd: path
+    ) do
+      {_, 0} ->
+        :ok
+      {output, _} ->
+        _ =
+          Logger.warning(fn -> "react_renderer build error #{inspect(output)}" end)
 
-    :ok
+        :ok
+    end
   end
 end

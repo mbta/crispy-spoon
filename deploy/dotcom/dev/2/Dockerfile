@@ -8,5 +8,5 @@ WORKDIR /app
 
 COPY mix.exs .
 COPY mix.lock .
-RUN mix deps.get
-CMD elixir --sname dotcom2 --cookie foobarbaz -S mix phx.server
+CMD mix deps.get \
+     && elixir --sname dotcom2 --cookie foobarbaz -S mix phx.server

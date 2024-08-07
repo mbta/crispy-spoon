@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/themes/light.css" />
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/shoelace.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    /* Box sizing rules */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* Prevent font size inflation */
+    html {
+      -moz-text-size-adjust: none;
+      -webkit-text-size-adjust: none;
+      text-size-adjust: none;
+    }
+
+    /* Remove default margin in favour of better control in authored CSS */
+    body, h1, h2, h3, h4, p,
+    figure, blockquote, dl, dd {
+      margin-block-end: 0;
+    }
+
+    /* Set core body defaults */
+    body {
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* Set shorter line heights on headings and interactive elements */
+    h1, h2, h3, h4,
+    button, input, label {
+      line-height: 1.1;
+    }
+
+    /* Balance text wrapping on headings */
+    h1, h2,
+    h3, h4 {
+      text-wrap: balance;
+    }
+  </style>
+  <style>
+    body {
+      background-color: var(--sl-color-amber-50);
+      font-family: "Helvetica Neue", var(--sl-font-sans);
+      line-height: 1.3;
+    }
+
+    main {
+      max-width: 120ch;
+      margin: 1rem auto;
+    }
+
+    header {
+      background: var(--sl-color-amber-200);
+      padding: 1rem;
+    }
+
+    sl-details.custom-icons::part(summary) {
+      font-weight: bold;
+      padding-right: 1rem;
+    }
+
+    .small-caps {
+      color: navy;
+      font-size: small;
+      text-transform: uppercase;
+    }
+
+    sl-details.custom-icons::part(summary-icon) {
+      rotate: none;
+    }
+
+    sl-details::part(base) {
+      margin-block: 1rem;
+      border: solid 1px var(--sl-color-neutral-500);
+      border-radius: var(--sl-border-radius-small);
+      background-color: var(--sl-color-neutral-0);
+    }
+
+    sl-tag::part(base) {
+      font-weight: bold;
+      --sl-spacing-x-small: .25rem;
+      height: 1.4rem;
+      margin-right: .5em;
+    }
+  
+    sl-card::part(base) {
+      --padding: 1rem;
+      margin-block: .75rem;
+      box-shadow: var(--sl-shadow-large);
+      border: solid var(--border-width) var(--sl-color-neutral-300);
+      border-radius: var(--border-radius);
+    }
+
+    sl-tab::part(base) {
+      color: black;
+      font-size: large;
+    }
+
+    .tab-nav {
+      margin-right: .25em;
+    }
+
+    sl-alert::part(message) {
+      padding: var(--sl-spacing-small)
+    }
+
+    sl-tab-group::part(base) {
+      --track-width: 15px; 
+      --indicator-color: black;
+      padding-block: 1rem;
+      background-color: var(--sl-color-neutral-0); 
+      border: 3px var(--sl-color-amber-200) solid; 
+    }
+  </style>
+  <title>axe-core test results</title>
+</head>
+<body>
+  <main x-data="{ 
+    response: JSON.parse(document.getElementById('response').innerText), 
+    loading: true, 
+    async init() { this.loading = false; }
+  }">
+    <sl-progress-bar indeterminate x-show="loading" x-transition style="padding: 4rem 3rem;"></sl-progress-bar>
+    <header x-show="!loading" x-transition>
+      <h1 x-text="response.url"></h1>
+      Tested at <time x-text="formatTime(response.timestamp)"></time>
+      <p>
+        <template x-for="tag in (((response.toolOptions || {}).runOnly || {}).values || [])">
+          <sl-tag size="medium" variant="neutral" x-text="tag"></sl-tag>
+        </template>
+      </p>
+    </header>
+    <section x-show="!loading" x-transition>
+      <sl-tab-group placement="start">
+        <sl-tab slot="nav" panel="violations">
+          <div class="tab-nav">Failed</div>
+          <sl-badge variant="danger" pill pulse x-text="countIssues($data.response['violations'] || [])"></sl-badge>
+        </sl-tab>
+        <sl-tab-panel name="violations">
+          <template x-for="issue in $data.response['violations']">
+            <x-issue x-data="{ issue }"></x-issue>
+          </template>
+        </sl-tab-panel>
+
+
+        <sl-tab slot="nav" panel="incomplete">
+          <div class="tab-nav">Needs review</div>
+          <sl-badge variant="warning" pill pulse x-text="countIssues($data.response['incomplete'] || [])"></sl-badge>
+        </sl-tab>
+        <sl-tab-panel name="incomplete" x-data="$data.response['incomplete']">
+          <sl-alert variant="warning" open>
+            <sl-icon slot="icon" name="exclamation-triangle"></sl-icon>
+            These results were aborted and require further testing. This can happen either
+              because of technical restrictions to what the rule can test, or because a javascript error occurred.
+          </sl-alert>
+          <template x-for="issue in $data.response['incomplete']">
+            <x-issue x-data="{ issue }"></x-issue>
+          </template>
+        </sl-tab-panel>
+
+        <sl-tab slot="nav" panel="passes">
+          <div class="tab-nav">Passed</div>
+          <sl-badge variant="success" pill x-text="countIssues($data.response['passes'] || [])"></sl-badge>
+        </sl-tab>
+        <sl-tab-panel name="passes" x-data="$data.response['passes']">
+          <template x-for="issue in $data.response['passes']">
+            <x-issue x-data="{ issue }"></x-issue>
+          </template>
+        </sl-tab-panel>
+
+        <sl-tab slot="nav" panel="inapplicable">
+          <div class="tab-nav">Other checks</div>
+          <sl-badge variant="neutral" pill x-text="countIssues($data.response['inapplicable'] || [])"></sl-badge>
+        </sl-tab>
+        <sl-tab-panel name="inapplicable" x-data="$data.response['inapplicable']">
+          <sl-alert variant="neutral" open>
+            <sl-icon slot="icon" name="info-circle"></sl-icon>
+            These results indicate which rules did not run because no matching content was
+              found on the page. For example, with no video, those rules won't run.
+          </sl-alert>
+          <template x-for="issue in $data.response['inapplicable']">
+            <x-issue x-data="{ issue }"></x-issue>
+          </template>
+        </sl-tab-panel>
+      </sl-tab-group>
+    </section>
+  </main>
+
+  <template x-component="issue">
+    <sl-details class="custom-icons">
+      <div slot="summary">
+        <span x-text="issue.description"></span>
+        <sl-tag size="small" x-show="issue.impact" :variant="impactToVariant(issue.impact)" x-text="issue.impact"></sl-tag>
+      </div>
+      <div slot="expand-icon">
+        <span class="small-caps" x-show="issue.nodes.length">+ Show <span x-text="issue.nodes.length"></span> nodes</span>
+      </div>
+      <div slot="collapse-icon">
+        <span class="small-caps" x-show="issue.nodes.length">− Hide <span x-text="issue.nodes.length"></span> nodes</span>
+      </div>
+      <div>
+        <span x-text="issue.help"></span>
+        <a :href="issue.helpUrl" target="_blank">Learn more</a>
+      </div>
+      <template x-for="node in issue.nodes">
+        <x-node x-data="{ node }"></x-node>
+      </template>
+    </sl-details>
+  </template>
+
+  <template x-component="guidance">
+    <template x-if="guidance.length">
+    <div x-data="{ ...$el.parentElement.data() }">
+        <strong x-text="heading"></strong>
+        <ul>
+          <template x-for="thing in guidance">
+            <li>
+              <p x-text="thing.message"></p>
+              <template x-for="node in thing.relatedNodes">
+                <sl-card>
+                  <code x-text="node.html"></code>
+                  <div slot="footer"><span class="small-caps">Target:</span> <code slot="footer" x-text="node.target"></code></div>
+                </sl-card>
+              </template>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </template>
+  </template>
+
+  <template x-component="node">
+    <div x-data="{ ...$el.parentElement.data() }">
+      <sl-card>
+        <code slot="header" x-text="node.html"></code>
+        <x-guidance x-data="{ guidance: node.any, heading: 'At least one must pass' }"></x-guidance>
+        <x-guidance x-data="{ guidance: node.all, heading: 'All are required' }"></x-guidance>
+        <x-guidance x-data="{ guidance: node.none, heading: 'Check following (all must not pass)' }"></x-guidance>
+        <div slot="footer"><span class="small-caps">Target:</span> <code slot="footer" x-text="node.target"></code></div>
+      </sl-card>
+    </div>
+  </template>
+  <script type="text/javascript">
+    function impactToVariant(impact) {
+      switch (impact) {
+        case "critical":
+          return "danger";
+        case "serious":
+          return "warning";
+        case "moderate":
+          return "primary"
+        case "minor":
+        default:
+          return "neutral";
+      }
+    }
+
+    function countIssues(issues) {
+      return issues.reduce((count, issue) => count + issue.nodes.length, 0);
+    }
+
+    function formatTime(timestamp) {
+      if (timestamp) {
+        const date = new Date(timestamp);
+        let dateString = date.toLocaleDateString("en-US", {month: 'long', day: 'numeric', year: 'numeric'});
+        let timeString = date.toLocaleTimeString("en-US", {hour: 'numeric', minute: 'numeric', hour12: true});
+        let formattedDate = dateString + " | " + timeString;
+        return formattedDate;
+      }
+    }
+
+    document.querySelectorAll('[x-component]').forEach(component => {
+      const componentName = `x-${component.getAttribute('x-component')}`
+      class Component extends HTMLElement {
+        connectedCallback() {
+          this.append(component.content.cloneNode(true))
+        }
+
+        data() {
+          const attributes = this.getAttributeNames()
+          const data = {}
+          attributes.forEach(attribute => {
+            data[attribute] = this.getAttribute(attribute)
+          })
+          return data
+        }
+      }
+      customElements.define(componentName, Component)
+    })
+  </script>
+</body>
+</html>

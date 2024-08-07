@@ -18,6 +18,7 @@ module.exports = defineConfig({
     baseURL: process.env.HOST ? `https://${process.env.HOST}` : 'http://localhost:4001',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot: "on"
   },
   /* set the expect timeout to 30s */
   expect: { timeout: 30000 },

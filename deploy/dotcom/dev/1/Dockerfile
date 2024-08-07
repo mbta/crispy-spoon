@@ -6,14 +6,15 @@ RUN apt-get install -y nodejs
 
 WORKDIR /app
 
-COPY mix.exs .
-COPY mix.lock .
-COPY package.json .
-COPY assets/package.json ./assets/package.json
+COPY . .
 
 RUN mix local.hex --force
 RUN mix local.rebar --force
 
-RUN mix deps.get
-RUN npm --prefix assets install --package-lock-only --ignore-scripts --no-save --audit false --fund false --loglevel verbose
-CMD elixir --sname dotcom1 --cookie foobarbaz -S mix phx.server
+EXPOSE 4001
+
+CMD mix deps.get \
+     && npm ci \
+     && npm --prefix assets run webpack:build:react \
+     && mix phx.digest \
+     && elixir --sname dotcom1 --cookie foobarbaz -S mix phx.server

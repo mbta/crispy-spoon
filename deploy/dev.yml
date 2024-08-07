@@ -33,10 +33,13 @@ services:
             - MIX_ENV=dev
             - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
             - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            - MBTA_API_BASE_URL=${MBTA_API_BASE_URL}
+            - MBTA_API_KEY=${MBTA_API_KEY}
             - PORT=4002
             - REDIS_HOST=10.0.0.11
             - REDIS_PORT=6379
             - WEBPACK_PORT=8092
+            - WARM_CACHES=false
         expose:
             - 4002
         ports:
@@ -66,10 +69,13 @@ services:
             - MIX_ENV=dev
             - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
             - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            - MBTA_API_BASE_URL=${MBTA_API_BASE_URL}
+            - MBTA_API_KEY=${MBTA_API_KEY}
             - PORT=4003
             - REDIS_HOST=10.0.0.11
             - REDIS_PORT=6379
             - WEBPACK_PORT=8093
+            - WARM_CACHES=false
         expose:
             - 4003
         ports:

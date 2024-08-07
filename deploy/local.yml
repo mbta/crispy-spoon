@@ -1,0 +1,63 @@
+services:
+    redis:
+        image: grokzen/redis-cluster
+        network_mode: host
+        environment:
+            - INITIAL_PORT=30001
+            - REDIS_CLUSTER_IP=0.0.0.0
+            - IP=0.0.0.0
+        healthcheck:
+            test: ["CMD", "redis-cli", "-p", "30001", "ping"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+            start_period: 5s
+        volumes:
+            - ../:/app
+    dotcom:
+        network_mode: host
+        depends_on:
+            redis:
+                condition: service_started
+        build:
+            context: ../
+            dockerfile: ./deploy/dotcom/dev/1/Dockerfile
+        environment:
+            - MIX_ENV=dev
+            - CMS_API_BASE_URL=https://live-mbta.pantheonsite.io
+            - OPEN_TRIP_PLANNER_URL=http://otp2-local.mbtace.com
+            - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+            - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            - MBTA_API_BASE_URL=${MBTA_API_BASE_URL}
+            - MBTA_API_KEY=${MBTA_API_KEY}
+            - PORT=4001
+            - WEBPACK_PORT=8092
+            - WARM_CACHES=false
+            - REDIS_HOST=localhost
+            - REDIS_PORT=30001
+        expose:
+            - 4001
+        healthcheck:
+            test: curl --fail http://localhost:4001/_health || exit 1
+            interval: 60s
+            retries: 20
+            start_period: 240s
+            timeout: 60s
+        volumes:
+            - ../:/app
+    a11y-test:
+        image: mcr.microsoft.com/playwright:v1.42.1-jammy
+        healthcheck:
+            disable: true
+        depends_on:
+            dotcom:
+                condition: service_healthy
+        volumes:
+            - ../:/app
+        working_dir: /app
+        entrypoint: /bin/sh
+        command: -c "npx playwright test axe"
+        network_mode: host
+        environment:
+            - CI=true
+            - PLAYWRIGHT_HTML_OPEN=never
