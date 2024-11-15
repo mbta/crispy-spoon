@@ -1,10 +1,12 @@
 defmodule Dotcom.ComponentsTest do
   use DotcomWeb.ConnCase, async: true
   use Dotcom.Components.Precompiler
+
+  import Phoenix.HTML, only: [safe_to_string: 1]
+
   alias Dotcom.Components.Buttons.ButtonGroup
   alias Dotcom.Components.Icons.SvgIcon
   alias Dotcom.Components.Tabs.ModeTabList
-  import Phoenix.HTML, only: [safe_to_string: 1]
 
   describe "buttons > button_group" do
     test "button list renders links in button containers" do

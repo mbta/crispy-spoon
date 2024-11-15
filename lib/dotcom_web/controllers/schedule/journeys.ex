@@ -4,11 +4,13 @@ defmodule DotcomWeb.ScheduleController.Journeys do
   the work happens in JourneyList.
   """
   use Plug.Builder
+
+  require Routes.Route
+
   import Plug.Conn, only: [assign: 3, halt: 1]
   import Phoenix.Controller, only: [redirect: 2]
   import UrlHelpers, only: [update_url: 2]
 
-  require Routes.Route
   alias Routes.Route
 
   plug(:do_assign_journeys)

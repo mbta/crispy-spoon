@@ -1,7 +1,9 @@
 defmodule DotcomWeb.ScheduleController.Holidays do
-  @behaviour Plug
   import Plug.Conn, only: [assign: 3]
+
   alias DotcomWeb.ViewHelpers
+
+  @behaviour Plug
 
   @impl true
   def init(opts) do

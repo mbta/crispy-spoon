@@ -3,9 +3,9 @@ defmodule Predictions.Stream do
   Uses MBTA.Api.Stream to subscribe to the MBTA Api and receive prediction events.
   """
 
-  require Logger
-
   use GenStage
+
+  require Logger
 
   alias MBTA.Api.Stream.Event
   alias Phoenix.PubSub

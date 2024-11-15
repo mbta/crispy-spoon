@@ -2,8 +2,10 @@ defmodule DotcomWeb.ScheduleController.VehicleTooltips do
   @moduledoc """
   Assigns :vehicle_tooltips based on previously requested :route, :vehicle_locations and :vehicle_predictions.
   """
-  @behaviour Plug
+
   import Plug.Conn, only: [assign: 3]
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []

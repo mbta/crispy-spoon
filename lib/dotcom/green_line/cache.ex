@@ -10,9 +10,9 @@ defmodule Dotcom.GreenLine.Cache do
 
   use GenServer
 
-  alias Dotcom.GreenLine.{CacheSupervisor, DateAgent}
-
   require Logger
+
+  alias Dotcom.GreenLine.{CacheSupervisor, DateAgent}
 
   # Client
 

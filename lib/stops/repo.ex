@@ -3,8 +3,6 @@ defmodule Stops.Repo do
   Matches the Ecto API, but fetches Stops from the Stop Info API instead.
   """
 
-  @behaviour Stops.Repo.Behaviour
-
   use Nebulex.Caching.Decorators
 
   alias Dotcom.Cache.KeyGenerator
@@ -15,6 +13,8 @@ defmodule Stops.Repo do
   @ttl :timer.hours(1)
 
   @routes_repo Application.compile_env!(:dotcom, :repo_modules)[:routes]
+
+  @behaviour Stops.Repo.Behaviour
 
   for {old_id, gtfs_id} <-
         "priv/stops/stop_id_to_gtfs.csv"

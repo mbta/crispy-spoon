@@ -1,9 +1,10 @@
 defmodule Dotcom.TripPlan.LocationTest do
   use ExUnit.Case, async: true
-  alias Dotcom.TripPlan.{Location, NamedPosition, Query}
 
   import Mox
   import Test.Support.Factories.LocationService.LocationService
+
+  alias Dotcom.TripPlan.{Location, NamedPosition, Query}
 
   setup :verify_on_exit!
 

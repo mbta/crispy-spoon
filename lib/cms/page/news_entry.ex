@@ -3,9 +3,6 @@ defmodule CMS.Page.NewsEntry do
   Represents a "news_entry" content type in the Drupal CMS.
   """
 
-  # configured in the CMS
-  @number_of_recent_news_suggestions 4
-
   import CMS.Helpers,
     only: [
       field_value: 2,
@@ -16,6 +13,9 @@ defmodule CMS.Page.NewsEntry do
     ]
 
   alias Phoenix.HTML
+
+  # configured in the CMS
+  @number_of_recent_news_suggestions 4
 
   defstruct id: nil,
             title: HTML.raw(""),

@@ -5,8 +5,10 @@ defmodule DotcomWeb.Plugs.DateInRating do
   If the date is outside the current rating, then we redirect such that the
   date isn't in the URL anymore.
   """
-  @behaviour Plug
+
   alias Plug.Conn
+
+  @behaviour Plug
 
   @impl Plug
   def init([]), do: [dates_fn: &Schedules.Repo.rating_dates/0]

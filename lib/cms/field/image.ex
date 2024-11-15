@@ -3,7 +3,6 @@ defmodule CMS.Field.Image do
   Represents an image field in the Drupal CMS. This image field is embedded
   in other content types like CMS.Page.NewsEntry. Captions only used on galleries.
   """
-  alias Phoenix.HTML
 
   import CMS.Helpers,
     only: [
@@ -11,6 +10,8 @@ defmodule CMS.Field.Image do
       handle_html: 1,
       rewrite_url: 1
     ]
+
+  alias Phoenix.HTML
 
   defstruct url: "",
             alt: "",

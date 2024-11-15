@@ -7,8 +7,11 @@ defmodule DotcomWeb.Plugs.Banner do
   * Otherwise, display the beta announcement banner if necessary.
   """
 
-  @behaviour Plug
   import Plug.Conn, only: [assign: 3]
+
+  alias __MODULE__.Options
+
+  @behaviour Plug
 
   defmodule Options do
     @moduledoc """
@@ -23,8 +26,6 @@ defmodule DotcomWeb.Plugs.Banner do
             banner_fn: (-> Alerts.Banner.t() | nil)
           }
   end
-
-  alias __MODULE__.Options
 
   @impl true
   def init(opts), do: struct!(Options, opts)

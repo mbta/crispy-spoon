@@ -1,10 +1,10 @@
 defmodule DotcomWeb.Redirector do
-  @behaviour Plug
-
   import Plug.Conn, only: [put_status: 2, halt: 1]
   import Phoenix.Controller, only: [redirect: 2]
 
   alias CMS.Repo
+
+  @behaviour Plug
 
   @impl true
 

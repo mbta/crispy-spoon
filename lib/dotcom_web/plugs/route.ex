@@ -5,10 +5,11 @@ defmodule DotcomWeb.Plugs.Route do
 
   """
 
+  import Plug.Conn, only: [assign: 3]
+
   @routes_repo Application.compile_env!(:dotcom, :repo_modules)[:routes]
 
   @behaviour Plug
-  import Plug.Conn, only: [assign: 3]
 
   @impl true
   def init([]), do: []

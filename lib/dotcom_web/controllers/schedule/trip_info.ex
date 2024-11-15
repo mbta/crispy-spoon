@@ -6,15 +6,15 @@ defmodule DotcomWeb.ScheduleController.TripInfo do
 
   """
 
-  @behaviour Plug
+  require Routes.Route
 
   import Plug.Conn, only: [assign: 3]
-
-  require Routes.Route
 
   alias DotcomWeb.ScheduleController.VehicleLocations
   alias Plug.Conn
   alias Routes.Route
+
+  @behaviour Plug
 
   @predictions_repo Application.compile_env!(:dotcom, :repo_modules)[:predictions]
 

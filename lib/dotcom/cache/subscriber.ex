@@ -3,9 +3,9 @@ defmodule Dotcom.Cache.Subscriber do
   A GenServer that listens for messages about cache operations and actions on them.
   """
 
-  require Logger
-
   use GenServer
+
+  require Logger
 
   alias Dotcom.Cache.Publisher
 

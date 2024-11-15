@@ -7,11 +7,11 @@ defmodule Dotcom.Cache.Publisher do
   We only implement the delete/3 function to publish the cache invalidation message and stats/1 to reset the evictions counter.
   """
 
-  require Logger
-
   # Inherit default implementations
   use Nebulex.Adapter.Stats
   use Nebulex.Adapter.Transaction
+
+  require Logger
 
   alias Dotcom.Cache.Subscriber
   alias Nebulex.Adapter.Stats

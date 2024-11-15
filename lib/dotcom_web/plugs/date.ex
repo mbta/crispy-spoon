@@ -5,8 +5,9 @@ defmodule DotcomWeb.Plugs.Date do
   invalid or missing, uses today's service date.
 
   """
-  @behaviour Plug
   import Plug.Conn, only: [assign: 3]
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: [date_fn: &Util.service_date/0]

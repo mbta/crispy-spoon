@@ -5,9 +5,9 @@ defmodule CMS.Partial.Paragraph.TitleCardSet do
   CMS content (and can no longer be added via the CMS). Use Descriptive Links
   within a  Multi Column layout instead.
   """
-  defstruct descriptive_links: []
-
   alias CMS.Partial.Paragraph.DescriptiveLink
+
+  defstruct descriptive_links: []
 
   @type t :: %__MODULE__{
           descriptive_links: [DescriptiveLink.t()]

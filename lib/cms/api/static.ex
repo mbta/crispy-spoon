@@ -5,11 +5,11 @@ defmodule CMS.Api.Static do
   Should be removed when we rewrite all tests in this module.
   """
 
-  @behaviour CMS.Api.Behaviour
-
   alias CMS.Helpers
   alias CMS.Page.NewsEntry
   alias Poison.Parser
+
+  @behaviour CMS.Api.Behaviour
 
   # Views REST export responses with fully-loaded objects
 

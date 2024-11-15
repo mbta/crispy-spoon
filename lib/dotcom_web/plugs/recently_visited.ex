@@ -4,13 +4,13 @@ defmodule DotcomWeb.Plugs.RecentlyVisited do
   assigns recommended routes based on the saved values.
   """
 
-  @behaviour Plug
-
   alias DotcomWeb.Plugs.Cookies
   alias Plug.Conn
   alias Routes.Route
 
   @routes_repo Application.compile_env!(:dotcom, :repo_modules)[:routes]
+
+  @behaviour Plug
 
   @impl Plug
   def init([]), do: []

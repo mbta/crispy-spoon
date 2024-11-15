@@ -2,8 +2,10 @@ defmodule DotcomWeb.ScheduleController.Offset do
   @moduledoc """
   Assigns the offset parameter to determine which scheduled trips to show.
   """
-  @behaviour Plug
+
   import Plug.Conn, only: [assign: 3]
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []

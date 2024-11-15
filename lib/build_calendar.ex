@@ -42,6 +42,10 @@ defmodule BuildCalendar do
     * holiday?: true if the Day is a holiday
     * url: a URL to set this Day as the selected one
     """
+
+    import PhoenixHTMLHelpers.Tag
+    import PhoenixHTMLHelpers.Link
+
     @type month_relation :: :current | :previous | :next
     @type t :: %__MODULE__{
             date: Date.t(),
@@ -58,9 +62,6 @@ defmodule BuildCalendar do
               holiday?: false,
               url: nil,
               today?: false
-
-    import PhoenixHTMLHelpers.Tag
-    import PhoenixHTMLHelpers.Link
 
     @spec td(t) :: Phoenix.HTML.Safe.t()
     def td(%Day{month_relation: :previous} = day) do

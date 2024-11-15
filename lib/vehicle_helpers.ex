@@ -12,7 +12,6 @@ defmodule VehicleHelpers do
   alias Schedules.Trip
   alias DotcomWeb.ScheduleController.VehicleLocations
 
-  import Routes.Route, only: [vehicle_name: 1]
   alias Stops.Stop
   alias Vehicles.Vehicle
 

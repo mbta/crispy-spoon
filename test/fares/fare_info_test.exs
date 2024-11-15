@@ -1,7 +1,9 @@
 defmodule Fares.FareInfoTest do
   use ExUnit.Case, async: true
-  alias Fares.Fare
+
   import Fares.FareInfo
+
+  alias Fares.Fare
 
   describe "fare_info/0" do
     test "returns a non-empty list of Fare objects" do

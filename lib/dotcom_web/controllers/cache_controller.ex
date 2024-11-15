@@ -4,9 +4,9 @@ defmodule DotcomWeb.CacheController do
   Currently, we only support deleting keys from the cache.
   """
 
-  require Logger
-
   use DotcomWeb, :controller
+
+  require Logger
 
   @cache Application.compile_env!(:dotcom, :cache)
 

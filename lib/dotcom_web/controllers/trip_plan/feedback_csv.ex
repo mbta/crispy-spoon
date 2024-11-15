@@ -2,9 +2,10 @@ defmodule DotcomWeb.TripPlan.FeedbackCSV do
   @moduledoc """
   Handle formatting feedback into a spreadsheet-friendly format.
   """
-  alias OpenTripPlannerClient.Schema.Step
 
   require Logger
+
+  alias OpenTripPlannerClient.Schema.Step
 
   @headers [
     "generated_time",

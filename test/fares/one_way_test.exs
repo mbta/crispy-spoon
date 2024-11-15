@@ -1,10 +1,10 @@
 defmodule OneWayTest do
   use ExUnit.Case, async: true
 
-  alias Routes.Route
-
   import Fares.OneWay
   import Mox
+
+  alias Routes.Route
 
   @default_filters [duration: :single_trip]
 

@@ -1,8 +1,11 @@
 defmodule DotcomWeb.CustomerSupportController do
   @moduledoc "Handles the customer support page and form submissions."
+
   use DotcomWeb, :controller
-  alias Routes.Route
+
   require Logger
+
+  alias Routes.Route
 
   @allowed_attachment_types ~w(image/bmp image/gif image/jpeg image/png image/tiff image/webp)
   # Max 6 files per ticket, max 2 MB for single attachment

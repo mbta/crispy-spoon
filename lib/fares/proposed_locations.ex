@@ -3,8 +3,9 @@ defmodule Fares.ProposedLocations do
     Gets information from the existing ArcGIS data related to proposed sales locations, parses the json and returns it.
   """
 
-  alias Fares.ProposedLocations.Location
   require Logger
+
+  alias Fares.ProposedLocations.Location
 
   @base_url "https://services1.arcgis.com/ceiitspzDAHrdGO1/ArcGIS/rest/services/ProposedSalesNetworkSpringOutreach/FeatureServer/0/query?f=json&outFields=*&inSR=4326&outSR=4326&returnGeometry=true"
 

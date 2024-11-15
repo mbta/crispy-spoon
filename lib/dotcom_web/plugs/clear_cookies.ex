@@ -7,9 +7,9 @@ defmodule DotcomWeb.Plugs.ClearCookies do
   * All other cookies are left untouched
   """
 
-  @behaviour Plug
-
   import Plug.Conn
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []

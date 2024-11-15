@@ -1,10 +1,10 @@
 defmodule Dotcom.TripPlan.OpenTripPlannerTest do
   use ExUnit.Case, async: true
 
-  alias Dotcom.TripPlan.{NamedPosition, OpenTripPlanner}
-
   import Mox
   import Test.Support.Factories.TripPlanner.TripPlanner
+
+  alias Dotcom.TripPlan.{NamedPosition, OpenTripPlanner}
 
   @date_time Faker.DateTime.forward(2)
   @from build(:stop_named_position)

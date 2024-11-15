@@ -1,10 +1,10 @@
 defmodule Fares.MonthTest do
   use ExUnit.Case, async: true
 
+  import Mox
+
   alias Fares.{Fare, Month}
   alias Routes.Route
-
-  import Mox
 
   @default_filters [reduced: nil, duration: :month]
 

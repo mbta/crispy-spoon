@@ -1,7 +1,9 @@
 defmodule DotcomWeb.ScheduleController.DatePicker do
   use Plug.Builder
-  alias Plug.Conn
+
   import UrlHelpers, only: [update_url: 2]
+
+  alias Plug.Conn
 
   plug(:assign_date_select)
   plug(:build_calendar)

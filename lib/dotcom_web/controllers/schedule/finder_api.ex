@@ -8,9 +8,9 @@ defmodule DotcomWeb.ScheduleController.FinderApi do
 
   use DotcomWeb, :controller
 
-  import DotcomWeb.ScheduleController.ScheduleApi, only: [format_time: 1, fares_for_service: 3]
-
   require Logger
+
+  import DotcomWeb.ScheduleController.ScheduleApi, only: [format_time: 1, fares_for_service: 3]
 
   alias Dotcom.TransitNearMe
   alias DotcomWeb.ControllerHelpers

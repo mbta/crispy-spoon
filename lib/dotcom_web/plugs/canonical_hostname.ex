@@ -8,10 +8,10 @@ defmodule DotcomWeb.Plugs.CanonicalHostname do
   effects when the site is loaded in mTicket's webview.
   """
 
-  @mticket_hostname "mticket.mbtace.com"
-
   import Plug.Conn
   import Phoenix.Controller, only: [redirect: 2]
+
+  @mticket_hostname "mticket.mbtace.com"
 
   def init(_) do
   end

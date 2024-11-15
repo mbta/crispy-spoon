@@ -1,9 +1,10 @@
 defmodule DotcomWeb.TransitNearMeController.LocationTest do
   use ExUnit.Case, async: true
-  alias DotcomWeb.TransitNearMeController.Location
 
   import Mox
   import Test.Support.Factories.LocationService.LocationService
+
+  alias DotcomWeb.TransitNearMeController.Location
 
   setup :verify_on_exit!
 

@@ -3,13 +3,13 @@ defmodule CMS.Partial.Paragraph.AgendaSubTopic do
   A paragraph for agenda sub-topics (used exclusively by CMS.Partial.Paragraph.AgendaTopic).
   """
 
-  alias Phoenix.HTML
-
   import CMS.Helpers,
     only: [
       field_value: 2,
       handle_html: 1
     ]
+
+  alias Phoenix.HTML
 
   defstruct title: "",
             description: HTML.raw("")

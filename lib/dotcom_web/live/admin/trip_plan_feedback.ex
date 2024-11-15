@@ -1,6 +1,11 @@
 defmodule DotcomWeb.Live.Admin.TripPlanFeedback do
-  alias DotcomWeb.TripPlan.Feedback
+  @moduledoc """
+  View for downloading data saved from the Trip Planner feedback form.
+  """
+
   use DotcomWeb, :live_view
+
+  alias DotcomWeb.TripPlan.Feedback
 
   def mount(_params, _session, socket) do
     {:ok,

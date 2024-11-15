@@ -4,9 +4,11 @@ defmodule Vehicles.Stream do
   """
 
   use GenStage
+
+  require Logger
+
   alias Phoenix.PubSub
   alias Vehicles.Parser
-  require Logger
 
   @type event_type :: :reset | :add | :update | :remove
 

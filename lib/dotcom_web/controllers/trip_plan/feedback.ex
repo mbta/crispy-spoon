@@ -4,10 +4,10 @@ defmodule DotcomWeb.TripPlan.Feedback do
   the trip planner. Saves to the Redis cache with the default TTL of :infinity.
   """
 
-  require Logger
-
   use DotcomWeb, :controller
   use Nebulex.Caching.Decorators
+
+  require Logger
 
   alias Dotcom.Cache.TripPlanFeedback.KeyGenerator
   alias DotcomWeb.TripPlan.FeedbackCSV

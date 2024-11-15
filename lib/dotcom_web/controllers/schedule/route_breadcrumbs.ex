@@ -1,9 +1,12 @@
 defmodule DotcomWeb.ScheduleController.RouteBreadcrumbs do
   @moduledoc "Fetches the route from `conn.assigns` and assigns breadcrumbs."
-  @behaviour Plug
+
   import Plug.Conn, only: [assign: 3]
   import DotcomWeb.Router.Helpers, only: [mode_path: 2]
+
   alias Util.Breadcrumb
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []

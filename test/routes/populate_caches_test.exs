@@ -3,6 +3,8 @@ defmodule Routes.PopulateCachesTest do
   use ExUnit.Case, async: true
 
   import Routes.PopulateCaches
+
+  alias __MODULE__.FakeRepo
   alias Routes.Route
 
   defmodule FakeRepo do
@@ -22,8 +24,6 @@ defmodule Routes.PopulateCachesTest do
       )
     end
   end
-
-  alias __MODULE__.FakeRepo
 
   setup do
     _ = Agent.start_link(&MapSet.new/0, name: FakeRepo)

@@ -3,9 +3,6 @@ defmodule CMS.Page.EventAgenda do
   Represents an agenda content type in the Drupal CMS.
   """
 
-  alias CMS.Field.Link
-  alias CMS.Partial.Paragraph
-
   import CMS.Helpers,
     only: [
       field_value: 2,
@@ -13,6 +10,9 @@ defmodule CMS.Page.EventAgenda do
       parse_paragraphs: 3,
       parse_link: 2
     ]
+
+  alias CMS.Field.Link
+  alias CMS.Partial.Paragraph
 
   defstruct id: nil,
             title: "",

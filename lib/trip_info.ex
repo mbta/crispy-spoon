@@ -1,9 +1,4 @@
 defmodule TripInfo do
-  require Routes.Route
-  alias Fares.OneWay
-
-  @stops_repo Application.compile_env!(:dotcom, :repo_modules)[:stops]
-
   @moduledoc """
   Wraps the important information about a trip.
 
@@ -19,6 +14,13 @@ defmodule TripInfo do
   * duration: the number of minutes the trip takes between origin_id and destination_id
   * base_fare: The minimum, non-discounted, one-way fare for the trip
   """
+
+  require Routes.Route
+
+  alias Fares.OneWay
+
+  @stops_repo Application.compile_env!(:dotcom, :repo_modules)[:stops]
+
   @type time :: PredictedSchedule.t()
   @type time_list :: [time]
   @type t :: %__MODULE__{

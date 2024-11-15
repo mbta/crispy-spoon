@@ -4,15 +4,17 @@ defmodule DotcomWeb.ScheduleController.Predictions do
   Assigns predictions based on the currently selected route/stop/direction.
 
   """
-  @behaviour Plug
-  import Plug.Conn
 
   require Logger
+
+  import Plug.Conn
 
   alias Predictions.Prediction
   alias Util.AsyncAssign
 
   @predictions_repo Application.compile_env!(:dotcom, :repo_modules)[:predictions]
+
+  @behaviour Plug
 
   @impl true
   def init(opts \\ []), do: opts

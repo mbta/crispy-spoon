@@ -2,9 +2,10 @@ defmodule DotcomWeb.ScheduleController.VehicleLocations do
   @moduledoc """
   Assigns vehicle locations corresponding to the already-assigned schedules, if they exist.
   """
-  import Plug.Conn, only: [assign: 3]
 
   require Logger
+
+  import Plug.Conn, only: [assign: 3]
 
   alias Stops.Stop
 

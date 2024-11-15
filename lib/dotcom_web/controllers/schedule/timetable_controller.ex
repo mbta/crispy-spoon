@@ -3,13 +3,13 @@ defmodule DotcomWeb.ScheduleController.TimetableController do
 
   use DotcomWeb, :controller
 
+  require Logger
+
   alias DotcomWeb.ScheduleView
   alias Plug.Conn
   alias RoutePatterns.RoutePattern
   alias Routes.Route
   alias Stops.Stop
-
-  require Logger
 
   @route_patterns_repo Application.compile_env!(:dotcom, :repo_modules)[:route_patterns]
   @stops_repo Application.compile_env!(:dotcom, :repo_modules)[:stops]

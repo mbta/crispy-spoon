@@ -1,9 +1,9 @@
 defmodule Util do
   @moduledoc "Utilities module"
 
-  require Logger
-
   use Timex
+
+  require Logger
 
   {:ok, endpoint} = Application.compile_env(:dotcom, :util_endpoint)
   {:ok, route_helper_module} = Application.compile_env(:dotcom, :util_router_helper_module)

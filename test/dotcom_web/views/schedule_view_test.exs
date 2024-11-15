@@ -1,14 +1,14 @@
 defmodule DotcomWeb.ScheduleViewTest do
   use DotcomWeb.ConnCase
 
-  alias CMS.Partial.RoutePdf
-  alias Routes.Route
-  alias Stops.Stop
-
   import DotcomWeb.ScheduleView
   import Mox
   import PhoenixHTMLHelpers.Tag, only: [content_tag: 3]
   import Phoenix.HTML, only: [safe_to_string: 1]
+
+  alias CMS.Partial.RoutePdf
+  alias Routes.Route
+  alias Stops.Stop
 
   setup :verify_on_exit!
 

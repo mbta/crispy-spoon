@@ -5,14 +5,14 @@ defmodule CMS.Partial.Paragraph.Callout do
   field which we will be parsing for the actual content data.
   """
 
-  alias CMS.Field.{Image, Link}
-  alias Phoenix.HTML
-
   import CMS.Helpers,
     only: [
       field_value: 2,
       parse_body: 1
     ]
+
+  alias CMS.Field.{Image, Link}
+  alias Phoenix.HTML
 
   defstruct title: "",
             body: HTML.raw(""),

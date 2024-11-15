@@ -3,10 +3,11 @@ defmodule DotcomWeb.CustomerSupportView do
   Helper functions for handling interaction with and submitting the customer support form
   """
   use DotcomWeb, :view
-  alias Routes.Route
+
   import PhoenixHTMLHelpers.Tag, only: [content_tag: 2, content_tag: 3]
 
   alias Feedback.Message
+  alias Routes.Route
 
   def photo_info(%{
         "photo" => %Plug.Upload{path: path, filename: filename, content_type: content_type}

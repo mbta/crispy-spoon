@@ -1,7 +1,9 @@
 defmodule Vehicles.ParserTest do
   use ExUnit.Case, async: true
-  alias Vehicles.Vehicle
+
   import Vehicles.Parser
+
+  alias Vehicles.Vehicle
 
   @item %JsonApi.Item{
     attributes: %{

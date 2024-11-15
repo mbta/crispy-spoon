@@ -1,7 +1,9 @@
 defmodule Fares.FormatTest do
   use ExUnit.Case, async: true
-  alias Fares.{Fare, Summary}
+
   import Fares.Format
+
+  alias Fares.{Fare, Summary}
 
   describe "price/1" do
     test "gets a string version of the price formatted nicely" do

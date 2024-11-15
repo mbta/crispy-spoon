@@ -1,9 +1,10 @@
 defmodule DotcomWeb.ScheduleController do
   use DotcomWeb, :controller
-  alias Routes.Route
-  alias Schedules.Schedule
 
   require Logger
+
+  alias Routes.Route
+  alias Schedules.Schedule
 
   plug(DotcomWeb.Plugs.Route when action not in [:cape_flyer, :schedules_for_stop])
 

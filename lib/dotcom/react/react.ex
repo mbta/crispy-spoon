@@ -2,8 +2,11 @@ defmodule Dotcom.React do
   @moduledoc """
   React renderer supervisor
   """
-  require Logger
+
   use Supervisor
+
+  require Logger
+
   alias Phoenix.HTML
 
   @pool_name :react_render

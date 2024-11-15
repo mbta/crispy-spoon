@@ -1,10 +1,10 @@
 defmodule Dotcom.Components.Register do
-  import Dotcom.Components.Helpers
-
   @moduledoc """
     Registers an @components attribute on a controller.
     Only used by style_guide_controller at the moment -- perhaps doesn't need to be its own module...
   """
+
+  import Dotcom.Components.Helpers
 
   defmacro __using__(_) do
     quote do

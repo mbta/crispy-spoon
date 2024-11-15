@@ -2,11 +2,11 @@ defmodule Stops.NearbyTest do
   use ExUnit.Case, async: true
   doctest Stops.Nearby
 
-  alias Util.Distance
-
   import Mox
   import Stops.Nearby
   import Test.Support.Factories.MBTA.Api
+
+  alias Util.Distance
 
   @latitude 42.577
   @longitude -71.225

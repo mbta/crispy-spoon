@@ -1,6 +1,8 @@
 defmodule DotcomWeb.Mode.HubBehavior do
   @moduledoc "Behavior for mode hub pages."
 
+  use DotcomWeb, :controller
+
   alias CMS.{API, Partial.Teaser, Repo}
   alias Fares.Summary
   alias Routes.Route
@@ -10,8 +12,6 @@ defmodule DotcomWeb.Mode.HubBehavior do
   @callback fares() :: [Summary.t()]
   @callback fare_description() :: String.t() | iodata
   @callback route_type() :: 0..4
-
-  use DotcomWeb, :controller
 
   defmacro __using__(opts) do
     quote location: :keep do

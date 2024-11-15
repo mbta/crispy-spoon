@@ -6,15 +6,15 @@ defmodule CMS.Partial.Paragraph.DescriptiveLink do
 
   """
 
-  alias CMS.Field.Link
-  alias Phoenix.HTML
-
   import CMS.Helpers,
     only: [
       field_value: 2,
       handle_html: 1,
       parse_link: 2
     ]
+
+  alias CMS.Field.Link
+  alias Phoenix.HTML
 
   defstruct body: HTML.raw(""),
             link: nil,

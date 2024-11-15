@@ -5,9 +5,9 @@ defmodule Schedules.Repo do
 
   use Nebulex.Caching.Decorators
 
-  import Kernel, except: [to_string: 1]
-
   require Logger
+
+  import Kernel, except: [to_string: 1]
 
   alias Dotcom.Cache.KeyGenerator
   alias MBTA.Api.Trips

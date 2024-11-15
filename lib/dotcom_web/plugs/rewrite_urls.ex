@@ -5,10 +5,11 @@ defmodule DotcomWeb.Plugs.RewriteUrls do
   Currently, only used to redirect from the old Boat-F3 (Hull Ferry) schedule
   to the new Boat-F1 (Hingham/Hull Ferry) schedule.
   """
-  @behaviour Plug
 
   import Plug.Conn
   import Phoenix.Controller, only: [redirect: 2]
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []

@@ -3,8 +3,6 @@ defmodule DotcomWeb.ScheduleController.Line do
   Actions to support rendering lines for a schedule
   """
 
-  @behaviour Plug
-
   import Phoenix.Controller, only: [redirect: 2]
   import Plug.Conn, only: [assign: 3, halt: 1]
   import UrlHelpers, only: [update_url: 2]
@@ -17,6 +15,8 @@ defmodule DotcomWeb.ScheduleController.Line do
 
   @type query_param :: String.t() | nil
   @type direction_id :: 0 | 1
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []

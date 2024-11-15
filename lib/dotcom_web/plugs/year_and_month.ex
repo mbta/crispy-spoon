@@ -4,8 +4,10 @@ defmodule DotcomWeb.Plugs.YearMonth do
   Assigns @year and @month to the Conn based on the corresponding query params, using @date as a fallback.
 
   """
-  @behaviour Plug
+
   import Plug.Conn, only: [assign: 3]
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []

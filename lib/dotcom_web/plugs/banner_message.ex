@@ -4,9 +4,10 @@ defmodule DotcomWeb.Plugs.BannerMessage do
   - `message_key` is the key that will be used to retrieve the message.
   - `message` is a map representing the actual message.
   """
-  @behaviour Plug
 
   import Plug.Conn, only: [assign: 3]
+
+  @behaviour Plug
 
   @impl true
   def init(opts) do

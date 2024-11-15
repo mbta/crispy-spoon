@@ -4,12 +4,12 @@ defmodule DotcomWeb.Plugs.ScheduleRedirector do
   Redirects to the default `/schedules/:route_id` path.
   """
 
-  @behaviour Plug
-
   import DotcomWeb.Router.Helpers, only: [schedule_path: 3]
   import Phoenix.Controller, only: [redirect: 2]
 
   alias Plug.Conn
+
+  @behaviour Plug
 
   @impl Plug
   def init(opts), do: opts

@@ -2,8 +2,10 @@ defmodule Dotcom.React.Worker do
   @moduledoc """
   React renderer worker
   """
-  require Logger
+
   use GenServer
+
+  require Logger
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts)

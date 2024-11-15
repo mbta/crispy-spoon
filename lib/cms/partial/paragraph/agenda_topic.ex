@@ -3,10 +3,6 @@ defmodule CMS.Partial.Paragraph.AgendaTopic do
   A paragraph for agenda topics (used exclusively by CMS.Page.Agenda).
   """
 
-  alias CMS.Field.{File, Link}
-  alias CMS.Partial.Paragraph.AgendaSubTopic
-  alias Phoenix.HTML
-
   import CMS.Helpers,
     only: [
       field_value: 2,
@@ -15,6 +11,10 @@ defmodule CMS.Partial.Paragraph.AgendaTopic do
       parse_links: 2,
       parse_paragraphs: 3
     ]
+
+  alias CMS.Field.{File, Link}
+  alias CMS.Partial.Paragraph.AgendaSubTopic
+  alias Phoenix.HTML
 
   defstruct title: "",
             video_bookmark: nil,

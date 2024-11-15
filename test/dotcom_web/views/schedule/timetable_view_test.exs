@@ -1,9 +1,11 @@
 defmodule DotcomWeb.Schedule.TimetableViewTest do
   use ExUnit.Case, async: true
+
   import DotcomWeb.ScheduleView.Timetable
-  alias Schedules.Schedule
   import Phoenix.ConnTest, only: [build_conn: 0]
   import Phoenix.HTML, only: [safe_to_string: 1]
+
+  alias Schedules.Schedule
 
   describe "stop_tooltip/2" do
     @expected_flag "Flag Stop"

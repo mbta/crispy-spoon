@@ -8,9 +8,9 @@ defmodule CMS.Repo do
   The base ttl for the repo is one hour.
   """
 
-  require Logger
-
   use Nebulex.Caching.Decorators
+
+  require Logger
 
   import CMS.Helpers, only: [preview_opts: 1]
 

@@ -4,10 +4,6 @@ defmodule CMS.Page.Basic do
   content types can use this struct, as defined in CMS.Page.Basic
   """
 
-  alias CMS.Breadcrumbs
-  alias CMS.Partial.{MenuLinks, Paragraph}
-  alias Phoenix.HTML
-
   import CMS.Helpers,
     only: [
       field_value: 2,
@@ -15,6 +11,10 @@ defmodule CMS.Page.Basic do
       parse_body: 1,
       parse_paragraphs: 2
     ]
+
+  alias CMS.Breadcrumbs
+  alias CMS.Partial.{MenuLinks, Paragraph}
+  alias Phoenix.HTML
 
   defstruct body: HTML.raw(""),
             id: nil,

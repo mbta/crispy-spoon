@@ -3,9 +3,9 @@ defmodule Algolia.Api do
   Interact with Algolia via their API.
   """
 
-  require Logger
-
   use Nebulex.Caching.Decorators
+
+  require Logger
 
   alias Algolia.Config
 

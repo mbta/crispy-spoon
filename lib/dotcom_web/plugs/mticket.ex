@@ -12,9 +12,10 @@ defmodule DotcomWeb.Plug.Mticket do
 
   """
 
-  @behaviour Plug
   import Phoenix.Controller, only: [put_layout: 2, put_view: 2, render: 3]
   import Plug.Conn
+
+  @behaviour Plug
 
   @impl true
   def init(_opts), do: []

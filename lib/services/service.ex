@@ -1,7 +1,9 @@
 defmodule Services.Service do
   @moduledoc "Processes Services, including dates and notes"
-  alias JsonApi.Item
+
   use Timex
+
+  alias JsonApi.Item
 
   defstruct added_dates: [],
             added_dates_notes: [],

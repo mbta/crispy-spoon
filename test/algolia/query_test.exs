@@ -1,7 +1,9 @@
 defmodule Algolia.QueryTest do
   use ExUnit.Case, async: true
-  alias Algolia.Query
+
   import Test.Support.EnvHelpers
+
+  alias Algolia.Query
 
   @encoded_query_params [
     "clickAnalytics=true",

@@ -3,9 +3,9 @@ defmodule Routes.Repo.Behaviour do
   Behavior for an API client for fetching route data.
   """
 
-  @optional_callbacks by_stop_with_route_pattern: 1, by_stop_and_direction: 3
-
   alias Routes.{Route, Shape}
+
+  @optional_callbacks by_stop_with_route_pattern: 1, by_stop_and_direction: 3
 
   @doc """
   Returns a list of all the routes

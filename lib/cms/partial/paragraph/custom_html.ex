@@ -2,13 +2,14 @@ defmodule CMS.Partial.Paragraph.CustomHTML do
   @moduledoc """
   Represents a CustomHTML Paragraph in the CMS
   """
-  alias Phoenix.HTML
 
   import CMS.Helpers,
     only: [
       field_value: 2,
       handle_html: 1
     ]
+
+  alias Phoenix.HTML
 
   defstruct body: HTML.raw(""),
             right_rail: false

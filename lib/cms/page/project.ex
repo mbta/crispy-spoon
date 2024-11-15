@@ -3,10 +3,6 @@ defmodule CMS.Page.Project do
   Represents the Project content type in the CMS.
   """
 
-  alias CMS.{Field, Partial.Paragraph}
-  alias Field.{File, Image}
-  alias Phoenix.HTML
-
   import CMS.Helpers,
     only: [
       field_value: 2,
@@ -19,6 +15,10 @@ defmodule CMS.Page.Project do
       parse_paragraphs: 2,
       path_alias: 1
     ]
+
+  alias CMS.{Field, Partial.Paragraph}
+  alias Field.{File, Image}
+  alias Phoenix.HTML
 
   @enforce_keys [:id]
   defstruct [

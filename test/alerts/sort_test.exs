@@ -2,8 +2,9 @@ defmodule Alerts.SortTest do
   use ExUnit.Case, async: true
   use Quixir
 
-  alias Alerts.Alert
   import Alerts.Sort
+
+  alias Alerts.Alert
 
   describe "sort/2" do
     test "sorts the notices by their updated at times (newest to oldest)" do

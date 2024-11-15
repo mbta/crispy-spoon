@@ -4,9 +4,9 @@ defmodule Alerts.Cache.BusStopChangeS3 do
   into %HistoricalAlert{} before saving.
   """
 
-  require Logger
-
   use Nebulex.Caching.Decorators
+
+  require Logger
 
   alias Alerts.{Alert, HistoricalAlert}
 

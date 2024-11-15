@@ -1,7 +1,9 @@
 defmodule DotcomWeb.ScheduleController.HoursOfOperation do
-  @behaviour Plug
   import Plug.Conn, only: [assign: 3]
+
   alias Schedules.HoursOfOperation
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []

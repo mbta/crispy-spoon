@@ -4,10 +4,6 @@ defmodule CMS.Page.Diversions do
   content types can use this struct, as defined in CMS.Page.Basic
   """
 
-  alias CMS.Breadcrumbs
-  alias CMS.Partial.{MenuLinks, Paragraph}
-  alias Phoenix.HTML
-
   import CMS.Helpers,
     only: [
       field_value: 2,
@@ -17,6 +13,10 @@ defmodule CMS.Page.Diversions do
       parse_paragraphs: 2,
       parse_related_transit: 1
     ]
+
+  alias CMS.Breadcrumbs
+  alias CMS.Partial.{MenuLinks, Paragraph}
+  alias Phoenix.HTML
 
   defstruct id: nil,
             body: HTML.raw(""),

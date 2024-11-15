@@ -1,9 +1,10 @@
 defmodule Dotcom.GreenLine.CacheSupervisorTest do
   use ExUnit.Case, async: true
-  alias Dotcom.GreenLine.DateAgent
 
   import Dotcom.GreenLine.CacheSupervisor
   import Mox
+
+  alias Dotcom.GreenLine.DateAgent
 
   setup :verify_on_exit!
 

@@ -3,9 +3,9 @@ defmodule Services.Repo do
   Retrieves services for a route.
   """
 
-  require Logger
-
   use Nebulex.Caching.Decorators
+
+  require Logger
 
   alias MBTA.Api.Services, as: ServicesApi
   alias Services.Service

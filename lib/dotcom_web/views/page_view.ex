@@ -1,5 +1,8 @@
 defmodule DotcomWeb.PageView do
   @moduledoc false
+
+  use DotcomWeb, :view
+
   import PhoenixHTMLHelpers.Tag
   import DotcomWeb.CMSHelpers
   import DotcomWeb.CMS.ParagraphView, only: [render_paragraph: 2]
@@ -7,8 +10,6 @@ defmodule DotcomWeb.PageView do
   alias CMS.Page.NewsEntry
   alias CMS.Partial.Banner
   alias DotcomWeb.PartialView
-
-  use DotcomWeb, :view
 
   @stops_repo Application.compile_env!(:dotcom, :repo_modules)[:stops]
   @spec get_route(Routes.Route.id_t()) :: Routes.Route.t() | nil

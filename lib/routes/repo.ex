@@ -1,9 +1,9 @@
 defmodule Routes.Repo do
   @moduledoc "Repo for fetching Route resources and their associated data from the V3 API."
 
-  require Logger
-
   use Nebulex.Caching.Decorators
+
+  require Logger
 
   import Routes.Parser
 

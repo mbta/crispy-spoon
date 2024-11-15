@@ -2,8 +2,10 @@ defmodule Routes.PopulateCaches do
   @moduledoc """
   Populate the Routes Repo cache out-of-band.
   """
-  require Logger
+
   use GenServer
+
+  require Logger
 
   alias Routes.Shape
 

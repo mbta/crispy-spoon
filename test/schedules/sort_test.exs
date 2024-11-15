@@ -1,9 +1,10 @@
 defmodule SortTest do
   use ExUnit.Case, async: true
 
-  alias Schedules.Schedule
   import Schedules.Sort
   import Timex, only: [shift: 2]
+
+  alias Schedules.Schedule
 
   @now Timex.now()
 

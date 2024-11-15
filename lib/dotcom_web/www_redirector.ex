@@ -13,12 +13,12 @@ defmodule DotcomWeb.WwwRedirector do
   ```
   """
 
-  @behaviour Plug
-
   import Phoenix.Controller, only: [redirect: 2]
   import Plug.Conn, only: [put_status: 2, halt: 1]
 
   alias Plug.Conn
+
+  @behaviour Plug
 
   @impl true
   def init([]), do: []
