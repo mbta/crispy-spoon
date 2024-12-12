@@ -39,9 +39,7 @@ ADD ./assets /root/assets
 
 WORKDIR /root/assets
 
-RUN npm install --package-lock-only
-RUN npm ci --ignore-scripts
-RUN npm install -S -install-links ../deps/mbta_metro/priv/
+RUN npm run install:ci
 
 # required so that Tailwind styles used in Elixir templates are built
 COPY ./lib/dotcom_web/ /root/lib/dotcom_web

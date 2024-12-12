@@ -12,8 +12,8 @@
     "redis": "4.6.13"
   },
   "scripts": {
-    "install": "npm install --prefix assets --omit=optional",
-    "install:ci": "npm ci --prefix assets --omit=optional",
+    "assets:install": "npm run --prefix assets install",
+    "assets:install:ci": "npm run --prefix assets install:ci",
     "prettier": "npm run --prefix assets prettier",
     "ci:lint:ts": "npm run --prefix assets eslint:ts",
     "ci:lint:js": "npm run --prefix assets eslint:js",

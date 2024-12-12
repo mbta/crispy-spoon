@@ -98,7 +98,7 @@ Welcome to [Dotcom](https://www.notion.so/mbta-downtown-crossing/Dotcom-6aa7b0f0
 
 1. Install our Node dependencies. From the root of this repo:
     ```
-    npm run install
+    npm run assets:install
     ```
     You won't see a `node_modules` folder at the root of this project -- this installs packages into `assets`.
 

@@ -101,7 +101,7 @@ jobs:
             priv
             react_renderer/dist/app.js
           key: ci-application-cache-${{ github.sha }}
-      - run: npm install --prefix assets -S -install-links deps/mbta_metro/priv/
+      - run: npm run assets:install:ci
       - run: npm --prefix assets run webpack:build
       - run: npm --prefix assets run webpack:build:react
       - run: mix compile --all-warnings

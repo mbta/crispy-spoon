@@ -17,6 +17,6 @@ RUN mix local.rebar --force
 
 RUN mix deps.get
 RUN mix deps.compile
-RUN npm install --prefix assets --omit=optional --audit false --fund false --loglevel verbose --ignore-scripts
+RUN npm run assets:install -- --audit false --fund false --loglevel verbose
 
 CMD mix deps.get && elixir --sname $SNAME --cookie foobarbaz -S mix phx.server

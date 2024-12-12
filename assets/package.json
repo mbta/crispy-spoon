@@ -143,6 +143,8 @@
     "webpack-merge": "5.10.0"
   },
   "scripts": {
+    "install": "npm install --omit=optional -install-links",
+    "install:ci": "npm ci --omit=optional -install-links",
     "eslint:js": "git diff --name-only --diff-filter=dx origin/main... | grep js/.*\\.js | awk -F/js '{print \"js\"$2}' | xargs eslint -c .eslintrc.js",
     "eslint:js:fix": "npm run eslint:js -- --fix",
     "eslint:ts": "cd ts && eslint -c .eslintrc.js --ext .ts,.tsx --max-warnings=0 .",
