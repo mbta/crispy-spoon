@@ -206,4 +206,19 @@ defmodule DotcomWeb.LayoutView do
       attrs
     )
   end
+
+  @hidden_from_search_engines [
+    "/org",
+    "/charlie",
+    "/policies/terms-use-charlie"
+  ]
+  @doc """
+  Returns a meta tag.
+  """
+  @spec robots_nofollow?(String.t()) :: boolean()
+  def robots_nofollow?(request_path) when request_path in @hidden_from_search_engines, do: true
+
+  def robots_nofollow?(request_path) do
+    Enum.any?(@hidden_from_search_engines, &String.starts_with?(request_path, &1 <> "/"))
+  end
 end

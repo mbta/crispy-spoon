@@ -9,24 +9,8 @@
     <meta name="description" content="<%= Phoenix.HTML.raw(meta_description) %>">
     <meta name="author" content="Massachusetts Bay Transportation Authority">
     <meta name="theme-color" content="#165c96">
+    <meta :if={robots_nofollow?(@conn.request_path)} name="robots" content="noindex, nofollow">
 
-    <%= # hide any mbtace sub domain
-    if String.match?(@conn.host, ~r/mbtace/) do %>
-      <meta name="robots" content="noindex, nofollow">
-    <% end %>
-
-    <%= # hide any page in /org directory from search engines
-    if @conn.request_path == "/org" || String.slice(@conn.request_path, 0..4) == "/org/" do %>
-      <meta name="robots" content="noindex, nofollow">
-    <% end %>
-    <%= # hide any page in /charlie directory from search engines
-    if @conn.request_path == "/charlie" || String.slice(@conn.request_path, 0..8) == "/charlie/" do %>
-      <meta name="robots" content="noindex, nofollow">
-    <% end %>
-    <%= # hide any page in /policies/terms-use-charlie directory from search engines
-    if @conn.request_path == "/policies/terms-use-charlie" || String.slice(@conn.request_path, 0..26) == "/policies/terms-use-charlie" do %>
-      <meta name="robots" content="noindex, nofollow">
-    <% end %>
     <% title = if Phoenix.Controller.view_template(@conn) == "404.html", do: "Page Not Found | MBTA - Massachusetts Bay Transportation Authority", else: title_breadcrumbs(@conn) %>
     <title><%= title %></title>
     <link rel="apple-touch-icon" href="<%= static_url(@conn, "/apple-touch-icon.png") %>" type="image/png">
