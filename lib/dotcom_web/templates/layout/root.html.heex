@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tag() %>
     <% meta_description = assigns[:meta_description] || "Official website of the MBTA -- schedules, maps, and fare information for Greater Boston's public transportation system, including subway, commuter rail, bus routes, and boat lines." %>
-    <meta name="description" content="<%= Phoenix.HTML.raw(meta_description) %>">
+    <meta name="description" content={Phoenix.HTML.raw(meta_description)}>
     <meta name="author" content="Massachusetts Bay Transportation Authority">
     <meta name="theme-color" content="#165c96">
     <meta :if={robots_nofollow?(@conn.request_path)} name="robots" content="noindex, nofollow">
 
     <% title = if Phoenix.Controller.view_template(@conn) == "404.html", do: "Page Not Found | MBTA - Massachusetts Bay Transportation Authority", else: title_breadcrumbs(@conn) %>
     <title><%= title %></title>
-    <link rel="apple-touch-icon" href="<%= static_url(@conn, "/apple-touch-icon.png") %>" type="image/png">
-    <link rel="icon" href="<%= static_url(@conn, "/images/mbta-logo-t-favicon.png") %>" sizes="32x32" type="image/png">
-    <link rel="icon" href="<%= static_url(@conn, "/favicon.ico") %>" sizes="16x16" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href={static_url(@conn, "/apple-touch-icon.png")} type="image/png">
+    <link rel="icon" href={static_url(@conn, "/images/mbta-logo-t-favicon.png")} sizes="32x32" type="image/png">
+    <link rel="icon" href={static_url(@conn, "/favicon.ico")} sizes="16x16" type="image/vnd.microsoft.icon">
 
     <%= if google_tag_manager_id() do %>
       <link rel="preconnect" href="//www.google-analytics.com">
@@ -33,24 +33,25 @@
     <% end %>
 
     <%= if Application.get_env(:dotcom, :dev_server?) do %>
-      <link rel="stylesheet" href="<%= "#{Application.get_env(:dotcom, :webpack_path)}/css/core.css" %>">
-      <link rel="stylesheet" href="<%= "#{Application.get_env(:dotcom, :webpack_path)}/css/app.css" %>">
-      <script defer src="<%= "#{Application.get_env(:dotcom, :webpack_path)}/core.js" %>"></script>
-      <script defer src="<%= "#{Application.get_env(:dotcom, :webpack_path)}/app.js" %>"></script>
+      <% webpack_path = Application.get_env(:dotcom, :webpack_path) %>
+      <link rel="stylesheet" href={"#{webpack_path}/css/core.css"}>
+      <link rel="stylesheet" href={"#{webpack_path}/css/app.css"}>
+      <script defer src={"#{webpack_path}/core.js"}></script>
+      <script defer src={"#{webpack_path}/app.js"}></script>
     <% else %>
-      <link rel="stylesheet" href="<%= static_url(@conn, "/css/core.css") %>">
-      <link rel="stylesheet" href="<%= static_url(@conn, "/css/app.css") %>">
-      <script defer src="<%= static_url(@conn, "/js/vendors.js") %>"></script>
-      <script defer src="<%= static_url(@conn, "/js/app.js") %>"></script>
+      <link rel="stylesheet" href={static_url(@conn, "/css/core.css")}>
+      <link rel="stylesheet" href={static_url(@conn, "/css/app.css")}>
+      <script defer src={static_url(@conn, "/js/vendors.js")}></script>
+      <script defer src={static_url(@conn, "/js/app.js")}></script>
     <% end %>
   </head>
   <%= content_tag(:body, class: Dotcom.BodyTag.class_name(@conn)) do %>
     <div class="body-wrapper" id="body-wrapper">
       <a href="#main" class="sr-only sr-only-focusable">Skip to main content</a>
       <%= DotcomWeb.PartialView.render "_hidden_icons.html", conn: @conn %>
-      <%= render "_new_header.html", @conn |> Plug.Conn.assign(:page, get_page_classes(Phoenix.Controller.view_module(@conn), Phoenix.Controller.view_template(@conn))) |> forward_assigns %>
+      <%= render "_new_header.html", conn: @conn %>
       <%= if assigns[:banner_template] do %>
-        <div class="announcement-container <%= assigns[:banner_class] %>">
+        <div class={"announcement-container #{assigns[:banner_class]}"}>
           <div class="container">
             <%= render __MODULE__, @banner_template, assigns %>
           </div>
@@ -73,31 +74,31 @@
       <%= if assigns[:search_header?] do %>
         <%= render "_searchbar.html", assigns %>
       <% end %>
-      <div class="page-container <%= get_page_classes(Phoenix.Controller.view_module(@conn), Phoenix.Controller.view_template(@conn)) %>">
+      <div class={"page-container #{get_page_classes(Phoenix.Controller.view_module(@conn), Phoenix.Controller.view_template(@conn))}"}>
         <%= content_tag :main, @inner_content, id: "main", tabindex: -1 %>
-      </div> <%# /container %>
+      </div>
       <%= render __MODULE__, "_footer.html", conn: @conn %>
 
       <%# Show a warning when browser is Internet Explorer %>
       <%= if Application.get_env(:dotcom, :dev_server?) do %>
-        <script defer src="<%= "#{Application.get_env(:dotcom, :webpack_path)}/iewarning.js" %>"></script>
+        <script defer src={"#{Application.get_env(:dotcom, :webpack_path)}/iewarning.js"}></script>
       <% else %>
-        <script defer src="<%= static_url(@conn, "/js/react.js") %>"></script>
-        <script defer src="<%= static_url(@conn, "/js/iewarning.js") %>"></script>
+        <script defer src={static_url(@conn, "/js/react.js")}></script>
+        <script defer src={static_url(@conn, "/js/iewarning.js")}></script>
       <% end %>
       <div id="ie-warning" class="c-ie-warning"></div>
     </div>
 
     <%= if google_tag_manager_id() do %>
       <!-- Google Tag Manager (noscript) -->
-      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= google_tag_manager_id()%>&gtm_auth=<%= google_tag_manager_auth() %>&gtm_preview=<%= google_tag_manager_preview() %>&gtm_cookies_win=x"
+      <noscript><iframe src={"https://www.googletagmanager.com/ns.html?id=#{google_tag_manager_id()}&gtm_auth=#{google_tag_manager_auth()}&gtm_preview=#{google_tag_manager_preview()}&gtm_cookies_win=x"}
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- End Google Tag Manager (noscript) -->
       <!-- Google Tag Manager -->
       <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth=<%= google_tag_manager_auth() %>&gtm_preview=<%= google_tag_manager_preview() %>&gtm_cookies_win=x';f.parentNode.insertBefore(j,f);
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl+ "&gtm_auth=<%= google_tag_manager_auth() %>&gtm_preview=<%= google_tag_manager_preview() %>&gtm_cookies_win=x";f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','<%= google_tag_manager_id() %>');
       </script>
       <!-- End Google Tag Manager -->
