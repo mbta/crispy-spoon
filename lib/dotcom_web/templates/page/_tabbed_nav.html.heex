@@ -1,49 +1,90 @@
 <div class="m-tabbed-nav" role="navigation">
   <div class="nav m-tabbed-nav__items" role="tablist">
     <div class="m-tabbed-nav__item-container">
-      <a tabindex="0" class="nav-link m-tabbed-nav__item active" role="tab" data-toggle="tab" data-tab-type="schedules" aria-controls="schedules-content" aria-selected="true">
+      <a
+        tabindex="0"
+        class="nav-link m-tabbed-nav__item active"
+        role="tab"
+        data-toggle="tab"
+        data-tab-type="schedules"
+        aria-controls="schedules-content"
+        aria-selected="true"
+      >
         <span aria-hidden="true">
-          <%= svg("icon-map-default.svg") %>
+          {svg("icon-map-default.svg")}
         </span>
         <span href="/schedules" class="m-tabbed-nav__icon-text">Schedules</span>
       </a>
     </div>
     <div class="m-tabbed-nav__item-container">
-      <a tabindex="0" class="nav-link m-tabbed-nav__item" role="tab" data-toggle="tab" data-tab-type="trip-planner" aria-controls="trip-planner-content" aria-selected="false">
+      <a
+        tabindex="0"
+        class="nav-link m-tabbed-nav__item"
+        role="tab"
+        data-toggle="tab"
+        data-tab-type="trip-planner"
+        aria-controls="trip-planner-content"
+        aria-selected="false"
+      >
         <span aria-hidden="true">
-          <%= svg("icon-trip-planner-default.svg") %>
+          {svg("icon-trip-planner-default.svg")}
         </span>
         <span href="/trip-planner" class="m-tabbed-nav__icon-text">Trip Planner</span>
       </a>
     </div>
     <div class="m-tabbed-nav__item-container">
-      <a tabindex="0" class="nav-link m-tabbed-nav__item" role="tab" data-toggle="tab" data-tab-type="alerts" aria-controls="alerts-content" aria-selected="false">
+      <a
+        tabindex="0"
+        class="nav-link m-tabbed-nav__item"
+        role="tab"
+        data-toggle="tab"
+        data-tab-type="alerts"
+        aria-controls="alerts-content"
+        aria-selected="false"
+      >
         <span aria-hidden="true">
-          <%= svg("icon-alerts-default.svg") %>
+          {svg("icon-alerts-default.svg")}
         </span>
         <span href="/alerts" class="m-tabbed-nav__icon-text">Alerts</span>
       </a>
     </div>
   </div>
   <div class="m-tabbed-nav__content">
-    <div role="tabpanel" id="schedules-content" class="m-tabbed-nav__content-item active" data-tab-content-type="schedules">
-    <%= render(DotcomWeb.PartialView, "_recently_visited.html", conn: @conn,
-                                                                routes: Map.get(assigns, :recently_visited, []),
-                                                                alerts: @alerts,
-                                                                date_time: @date_time,
-                                                                header_class: "text-2xl") %>
+    <div
+      role="tabpanel"
+      id="schedules-content"
+      class="m-tabbed-nav__content-item active"
+      data-tab-content-type="schedules"
+    >
+      {render(DotcomWeb.PartialView, "_recently_visited.html",
+        conn: @conn,
+        routes: Map.get(assigns, :recently_visited, []),
+        alerts: @alerts,
+        date_time: @date_time,
+        header_class: "text-2xl"
+      )}
       <%= unless Enum.empty?(Map.get(assigns, :recently_visited, [])) do %>
         <hr />
       <% end %>
-      <%= shortcut_icons() %>
+      {shortcut_icons()}
     </div>
-     <div role="tabpanel" id="trip-planner-content" class="m-tabbed-nav__content-item" data-tab-content-type="trip-planner">
+    <div
+      role="tabpanel"
+      id="trip-planner-content"
+      class="m-tabbed-nav__content-item"
+      data-tab-content-type="trip-planner"
+    >
       <div class="m-mode-hub__trip-plan-widget">
-        <%= DotcomWeb.PartialView.render("_trip_planner_widget.html", assigns) %>
+        {DotcomWeb.PartialView.render("_trip_planner_widget.html", assigns)}
       </div>
-     </div>
-     <div role="tabpanel" id="alerts-content" class="m-tabbed-nav__content-item" data-tab-content-type="alerts">
-       <%= alerts(@conn.assigns.alerts) %>
+    </div>
+    <div
+      role="tabpanel"
+      id="alerts-content"
+      class="m-tabbed-nav__content-item"
+      data-tab-content-type="alerts"
+    >
+      {alerts(@conn.assigns.alerts)}
     </div>
   </div>
 </div>
