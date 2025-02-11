@@ -12,31 +12,12 @@
   }
 }
 
-.m-homepage__shortcuts {
-  column-gap: 3.125%;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: auto;
-  justify-items: stretch;
-  margin-top: 24px;
-
-  @include media-breakpoint-down(xs) {
-    column-gap: 3.125%;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-  }
-}
-
 .m-homepage__shortcut {
   @include icon-size(80px);
   background-color: $white;
   border: $border;
   border-radius: .5rem;
   color: $gray-dark;
-  display: inline-block;
-  font-size: $font-size-h4;
-  font-weight: 700;
-  line-height: $headings-line-height;
   padding: $base-spacing;
   text-align: center;
 
@@ -52,7 +33,6 @@
 
   @include media-breakpoint-only(xs) {
     @include icon-size(40px);
-    margin-bottom: math.div($base-spacing, 2);
     padding: $space-12;
   }
 

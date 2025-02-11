@@ -66,7 +66,14 @@
       <%= unless Enum.empty?(Map.get(assigns, :recently_visited, [])) do %>
         <hr />
       <% end %>
-      {shortcut_icons()}
+      <div class="my-6 md:flex divide-y md:divide-y-0 md:divide-x">
+        <div class="flex-1 pb-6 md:pb-0 md:pe-6 grid gap-4 grid-cols-3 grid-rows-2 justify-items-stretch">
+          {shortcut_icons()}
+        </div>
+        <div class="pt-6 md:pt-0 md:ps-6 basis-2/6">
+          <.subway_status subway_status={@subway_status} />
+        </div>
+      </div>
     </div>
     <div
       role="tabpanel"

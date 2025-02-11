@@ -43,9 +43,10 @@ defmodule DotcomWeb.PageViewTest do
 
   describe "shortcut_icons/0" do
     test "renders shortcut icons" do
-      rendered = PageView.shortcut_icons() |> HTML.safe_to_string()
-      icons = Floki.find(rendered, ".m-homepage__shortcut")
+      icons = PageView.shortcut_icons()
       assert length(icons) == 5
+      icon = List.first(icons) |> HTML.safe_to_string()
+      assert icon =~ "<svg"
     end
   end
 
