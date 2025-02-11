@@ -213,7 +213,7 @@ defmodule DotcomWeb.LayoutView do
     "/policies/terms-use-charlie"
   ]
   @doc """
-  Returns a meta tag.
+  Evaluates whether we want to show a meta tag to disable search engine crawling
   """
   @spec robots_nofollow?(String.t()) :: boolean()
   def robots_nofollow?(request_path) when request_path in @hidden_from_search_engines, do: true
