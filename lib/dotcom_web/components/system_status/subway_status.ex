@@ -16,10 +16,10 @@ defmodule DotcomWeb.Components.SystemStatus.SubwayStatus do
     assigns = assigns |> assign(:rows, status_to_rows(assigns.subway_status))
 
     ~H"""
-    <div class="px-5 py-4 border-[1px] border-gray-lightest rounded-lg w-96">
+    <div class="px-5 py-4 bg-white border-[1px] border-gray-lightest rounded-lg">
       <div class="border-gray-lightest border-b-[1px] pl-2 pb-3 flex items-center gap-2">
         <.icon type="icon-svg" name="icon-mode-subway-default" class="h-7 w-7" />
-        <span class="font-heading font-bold text-[1.75rem]">Subway Status</span>
+        <span class="font-heading font-bold text-[1.75rem] text-nowrap">Subway Status</span>
       </div>
       <a
         :for={row <- @rows}
@@ -39,7 +39,7 @@ defmodule DotcomWeb.Components.SystemStatus.SubwayStatus do
           />
         </div>
         <div class={[
-          "py-3 w-full flex items-center",
+          "py-3 w-full flex items-center text-nowrap",
           row.style.short_bottom_border && "border-b-[1px] border-gray-lightest"
         ]}>
           <.status_label

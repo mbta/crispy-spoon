@@ -3,6 +3,7 @@ defmodule DotcomWeb.PageView do
   import PhoenixHTMLHelpers.Tag
   import DotcomWeb.CMSHelpers
   import DotcomWeb.CMS.ParagraphView, only: [render_paragraph: 2]
+  import DotcomWeb.Components.SystemStatus.SubwayStatus, only: [subway_status: 1]
 
   alias CMS.Page.NewsEntry
   alias CMS.Partial.Banner
@@ -143,11 +144,8 @@ defmodule DotcomWeb.PageView do
   end
 
   def shortcut_icons do
-    icons =
-      [:commuter_rail, :subway, :bus, :ferry, :the_ride]
-      |> Enum.map(&shortcut_icon/1)
-
-    content_tag(:div, icons, class: "m-homepage__shortcuts")
+    [:commuter_rail, :subway, :bus, :ferry, :the_ride]
+    |> Enum.map(&shortcut_icon/1)
   end
 
   @spec shortcut_icon(atom) :: Phoenix.HTML.Safe.t()

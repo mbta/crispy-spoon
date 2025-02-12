@@ -15,6 +15,7 @@ defmodule DotcomWeb.PageController do
 
   plug(:alerts)
   plug(DotcomWeb.Plugs.RecentlyVisited)
+  plug(:subway_status)
 
   @type content :: Banner.t() | Teaser.t() | WhatsHappeningItem.t()
   @type whats_happening_set :: {nil | [WhatsHappeningItem.t()], nil | [WhatsHappeningItem.t()]}
@@ -138,5 +139,9 @@ defmodule DotcomWeb.PageController do
     alerts = Alerts.Repo.all(conn.assigns.date_time)
 
     assign(conn, :alerts, alerts)
+  end
+
+  defp subway_status(conn, _opts) do
+    assign(conn, :subway_status, Dotcom.SystemStatus.subway_status())
   end
 end
