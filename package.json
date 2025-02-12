@@ -3,7 +3,7 @@
   "dependencies": {
     "@playwright/test": "1.42.1",
     "@sentry/node": "7.109.0",
-    "artillery": "2.0.8",
+    "artillery": "2.0.21",
     "axios": "1.7.4",
     "hot-shots": "10.0.0",
     "node-cron": "3.0.3",
