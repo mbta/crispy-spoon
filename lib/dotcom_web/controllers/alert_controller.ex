@@ -8,6 +8,7 @@ defmodule DotcomWeb.AlertController do
   plug(:alerts)
   plug(DotcomWeb.Plugs.AlertsByTimeframe)
   plug(DotcomWeb.Plug.Mticket)
+  plug(:subway_status)
 
   @routes_repo Application.compile_env!(:dotcom, :repo_modules)[:routes]
   @stops_repo Application.compile_env!(:dotcom, :repo_modules)[:stops]
@@ -26,7 +27,16 @@ defmodule DotcomWeb.AlertController do
   end
 
   def show(conn, %{"id" => mode}) when mode in @valid_ids do
-    render_routes(conn)
+    if mode == "subway" do
+      conn
+      |> assign(
+        :alerts,
+        Enum.reject(conn.assigns.alerts, &Dotcom.Alerts.service_impacting_alert?/1)
+      )
+      |> render_routes()
+    else
+      render_routes(conn)
+    end
   end
 
   def show(conn, _params) do
@@ -141,4 +151,8 @@ defmodule DotcomWeb.AlertController do
 
   defp id_to_atom("commuter-rail"), do: :commuter_rail
   defp id_to_atom(id), do: String.to_existing_atom(id)
+
+  defp subway_status(conn, _opts) do
+    assign(conn, :subway_status, Dotcom.SystemStatus.subway_status())
+  end
 end
