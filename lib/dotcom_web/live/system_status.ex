@@ -73,9 +73,13 @@ defmodule DotcomWeb.Live.SystemStatus do
     <div class="flex flex-col gap-2">
       <.route_pill route_id="Blue" />
       <.route_pill route_id="Green" />
+      <.route_pill route_id="Green-D" />
       <.route_pill route_id="Orange" />
       <.route_pill route_id="Red" />
+      <.route_pill route_id="Mattapan" />
       <.route_pill route_id="Green" modifier_ids={["Green-B", "Green-C"]} />
+      <.route_pill route_id="Lolwut" />
+      <.route_pill route_id="Green" modifier_ids={["Mattapan"]} />
     </div>
     """
   end

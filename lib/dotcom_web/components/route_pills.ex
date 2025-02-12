@@ -9,7 +9,23 @@ defmodule DotcomWeb.Components.RoutePills do
   attr :modifier_ids, :list, default: []
   attr :modifier_class, :string, default: ""
 
-  def route_pill(%{modifier_ids: []} = assigns) do
+  @green_line_branches GreenLine.branch_ids()
+  @subway_lines Dotcom.Routes.subway_route_ids()
+
+  def route_pill(%{route_id: route_id} = assigns) when route_id in @green_line_branches do
+    ~H"""
+    <.route_pill route_id="Green" modifier_ids={[@route_id]} />
+    """
+  end
+
+  def route_pill(%{route_id: "Mattapan"} = assigns) do
+    ~H"""
+    <.route_pill route_id="Red" modifier_ids={["Mattapan"]} />
+    """
+  end
+
+  def route_pill(%{route_id: route_id, modifier_ids: []} = assigns)
+      when route_id in @subway_lines do
     ~H"""
     <div class={
       [
@@ -22,7 +38,29 @@ defmodule DotcomWeb.Components.RoutePills do
     """
   end
 
+  def route_pill(%{route_id: route_id, modifier_ids: modifier_ids} = assigns) do
+    if valid_modifiers?(route_id, modifier_ids) do
+      ~H"""
+      <.route_pill_with_modifiers
+        route_id={@route_id}
+        modifier_ids={@modifier_ids}
+        modifier_class={@modifier_class}
+      />
+      """
+    else
+      ~H"""
+      <.unknown_route_pill />
+      """
+    end
+  end
+
   def route_pill(assigns) do
+    ~H"""
+    <.unknown_route_pill />
+    """
+  end
+
+  defp route_pill_with_modifiers(assigns) do
     ~H"""
     <span class="flex">
       <.route_pill route_id={@route_id} />
@@ -49,6 +87,19 @@ defmodule DotcomWeb.Components.RoutePills do
     """
   end
 
+  defp unknown_route_pill(assigns) do
+    ~H"""
+    <div class={
+      [
+        "bg-gray-500",
+        "w-[3.125rem]"
+      ] ++ shared_icon_classes()
+    }>
+      ?
+    </div>
+    """
+  end
+
   defp pill_text(route_id) do
     (route_id |> String.at(0)) <> "L"
   end
@@ -70,4 +121,12 @@ defmodule DotcomWeb.Components.RoutePills do
       "text-white font-bold font-heading select-none leading-none"
     ]
   end
+
+  defp valid_modifiers?("Green", modifiers) do
+    modifiers |> Enum.all?(&(&1 in @green_line_branches))
+  end
+
+  defp valid_modifiers?("Red", ["Mattapan"]), do: true
+
+  defp valid_modifiers?(_route_id, _modifiers), do: false
 end
