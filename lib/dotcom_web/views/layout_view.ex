@@ -221,4 +221,24 @@ defmodule DotcomWeb.LayoutView do
   def robots_nofollow?(request_path) do
     Enum.any?(@hidden_from_search_engines, &String.starts_with?(request_path, &1 <> "/"))
   end
+
+  def meta_description(%{meta_description: meta_description}) when not is_nil(meta_description) do
+    Phoenix.HTML.raw(meta_description)
+  end
+
+  def meta_description(_) do
+    "Official website of the MBTA -- schedules, maps, and fare information for Greater Boston's public transportation system, including subway, commuter rail, bus routes, and boat lines."
+  end
+
+  def title(%Plug.Conn{} = conn) do
+    if Phoenix.Controller.view_template(conn) == "404.html" do
+      "Page Not Found | MBTA - Massachusetts Bay Transportation Authority"
+    else
+      title_breadcrumbs(conn)
+    end
+  end
+
+  def webpack_path do
+    Application.get_env(:dotcom, :webpack_path)
+  end
 end

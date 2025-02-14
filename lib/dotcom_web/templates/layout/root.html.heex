@@ -5,19 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {csrf_meta_tag()}
-    <% meta_description =
-      assigns[:meta_description] ||
-        "Official website of the MBTA -- schedules, maps, and fare information for Greater Boston's public transportation system, including subway, commuter rail, bus routes, and boat lines." %>
-    <meta name="description" content={Phoenix.HTML.raw(meta_description)} />
+    <meta name="description" content={meta_description(assigns)} />
     <meta name="author" content="Massachusetts Bay Transportation Authority" />
     <meta name="theme-color" content="#165c96" />
     <meta :if={robots_nofollow?(@conn.request_path)} name="robots" content="noindex, nofollow" />
-
-    <% title =
-      if Phoenix.Controller.view_template(@conn) == "404.html",
-        do: "Page Not Found | MBTA - Massachusetts Bay Transportation Authority",
-        else: title_breadcrumbs(@conn) %>
-    <title>{title}</title>
+    <title>{title(@conn)}</title>
     <link
       rel="apple-touch-icon"
       href={static_url(@conn, "/apple-touch-icon.png")}
@@ -57,12 +49,11 @@
     <% end %>
 
     <%= if Application.get_env(:dotcom, :dev_server?) do %>
-      <% webpack_path = Application.get_env(:dotcom, :webpack_path) %>
-      <link rel="stylesheet" href={"#{webpack_path}/css/core.css"} />
-      <link rel="stylesheet" href={"#{webpack_path}/css/app.css"} />
-      <script defer src={"#{webpack_path}/core.js"}>
+      <link rel="stylesheet" href={"#{webpack_path()}/css/core.css"} />
+      <link rel="stylesheet" href={"#{webpack_path()}/css/app.css"} />
+      <script defer src={"#{webpack_path()}/core.js"}>
       </script>
-      <script defer src={"#{webpack_path}/app.js"}>
+      <script defer src={"#{webpack_path()}/app.js"}>
       </script>
     <% else %>
       <link rel="stylesheet" href={static_url(@conn, "/css/core.css")} />
