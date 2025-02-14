@@ -6,6 +6,7 @@ const port = process.env.WEBPACK_PORT || 8090;
 
 module.exports = env =>
   merge(base, {
+    cache: { type: "filesystem" },
     mode: "development",
 
     devtool: "source-map",
@@ -27,6 +28,8 @@ module.exports = env =>
       static: {
         directory: path.resolve(__dirname, "../priv/static/")
       },
+      hot: "only",
+      setupExitSignals: true,
       watchFiles: {
         paths: ["ts/**/*", "js/**/*", "css/**/*", "vendor/**/*"],
         options: {

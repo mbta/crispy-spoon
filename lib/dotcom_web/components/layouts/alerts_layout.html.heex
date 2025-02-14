@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="page-section">
+    <div class="page-header">
+      <h1>Alerts</h1>
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        {render_slot(@sidebar_top)}
+        <div class="hidden-md-down">
+          {render_slot(@sidebar_bottom)}
+        </div>
+      </div>
+      <div class="col-lg-8 col-lg-offset-1">
+        <div class="m-alerts__mode-buttons">
+          <a
+            :for={mode <- [:subway, :bus, :commuter_rail, :ferry, :access]}
+            href={~p"/alerts/#{mode}"}
+            class="m-alerts__mode-button-container"
+          >
+            <div class={[
+              "m-alerts__mode-button",
+              if(@mode == mode, do: "m-alerts__mode-button--selected")
+            ]}>
+              <div class="m-alerts__mode-icon">{DotcomWeb.AlertView.type_icon(mode)}</div>
+              <div class="m-alerts__mode-name">{DotcomWeb.AlertView.type_name(mode)}</div>
+            </div>
+          </a>
+        </div>
+
+        {render_slot(@main_section)}
+
+        <div class="hidden-lg-up">
+          {render_slot(@sidebar_bottom)}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

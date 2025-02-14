@@ -12,11 +12,15 @@ config :dotcom, :cache, Dotcom.Cache.TestCache
 config :dotcom, :httpoison, HTTPoison.Mock
 
 config :dotcom, :cms_api_module, CMS.Api.Static
+
+config :dotcom, :date_time_module, Dotcom.Utils.DateTime.Mock
+
 config :dotcom, :mbta_api_module, MBTA.Api.Mock
 
 config :dotcom, :location_service, LocationService.Mock
 
 config :dotcom, :repo_modules,
+  alerts: Alerts.Repo.Mock,
   predictions: Predictions.Repo.Mock,
   route_patterns: RoutePatterns.Repo.Mock,
   routes: Routes.Repo.Mock,

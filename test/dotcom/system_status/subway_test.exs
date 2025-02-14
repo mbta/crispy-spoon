@@ -2,11 +2,9 @@ defmodule Dotcom.SystemStatus.SubwayTest do
   use ExUnit.Case, async: true
   doctest Dotcom.SystemStatus.Subway
 
-  alias Dotcom.SystemStatus.Alerts
+  alias Dotcom.Alerts
   alias Dotcom.SystemStatus.Subway
   alias Test.Support.Factories.Alerts.Alert
-  alias Test.Support.Factories.Alerts.InformedEntity
-  alias Test.Support.Factories.Alerts.InformedEntitySet
 
   @lines_without_branches List.delete(Subway.lines(), "Green")
 
@@ -29,8 +27,12 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       # Setup
       affected_route_id = Faker.Util.pick(@lines_without_branches)
       time = time_today()
-      effect = Faker.Util.pick(Alerts.service_effects())
-      alerts = [current_alert(route_id: affected_route_id, time: time, effect: effect)]
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
+
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_route_id, effect: effect)
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -48,8 +50,12 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       # Setup
       affected_route_id = Faker.Util.pick(@lines_without_branches)
       time = time_today()
-      effect = Faker.Util.pick(Alerts.service_effects())
-      alerts = [current_alert(route_id: affected_route_id, time: time, effect: effect)]
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
+
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_route_id, effect: effect)
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -67,7 +73,11 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       # Setup
       affected_route_id = Faker.Util.pick(@lines_without_branches)
       time = time_today()
-      alerts = [current_alert(route_id: affected_route_id, time: time)]
+
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_route_id)
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -86,7 +96,10 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       affected_route_id = Faker.Util.pick(@lines_without_branches)
       time = time_today()
 
-      alerts = [current_alert(route_id: affected_route_id, time: time)]
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_route_id)
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -111,7 +124,10 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       time = time_today()
       alert_start_time = time_after(time)
 
-      alerts = [future_alert(route_id: affected_route_id, start_time: alert_start_time)]
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_route_id)
+        |> Alert.active_starting_at(alert_start_time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -130,11 +146,11 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       affected_route_id = Faker.Util.pick(@lines_without_branches)
 
       time = time_today()
-      effect = Faker.Util.pick(Alerts.service_effects())
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
       alert_start_time = time_before(time)
 
       alerts = [
-        alert(
+        Alert.build(:alert_for_route,
           route_id: affected_route_id,
           effect: effect,
           active_period: [{alert_start_time, nil}]
@@ -165,7 +181,7 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       expired_alert_start_time = time_before(expired_alert_end_time)
 
       alerts = [
-        alert(
+        Alert.build(:alert_for_route,
           route_id: affected_route_id,
           active_period: [
             {expired_alert_start_time, expired_alert_end_time},
@@ -195,12 +211,14 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       # Sorted in reverse order in order to validate that the sorting
       # logic works
       [effect2, effect1] =
-        Faker.Util.sample_uniq(2, fn -> Faker.Util.pick(Alerts.service_effects()) end)
+        Faker.Util.sample_uniq(2, fn -> Faker.Util.pick(Alerts.service_impacting_effects()) end)
         |> Enum.sort(:desc)
 
       alerts = [
-        current_alert(route_id: affected_route_id, time: time, effect: effect1),
-        current_alert(route_id: affected_route_id, time: time, effect: effect2)
+        Alert.build(:alert_for_route, route_id: affected_route_id, effect: effect1)
+        |> Alert.active_during(time),
+        Alert.build(:alert_for_route, route_id: affected_route_id, effect: effect2)
+        |> Alert.active_during(time)
       ]
 
       # Exercise
@@ -224,8 +242,10 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       future_alert_start_time = time_after(time)
 
       alerts = [
-        future_alert(route_id: affected_route_id, start_time: future_alert_start_time),
-        current_alert(route_id: affected_route_id, time: time)
+        Alert.build(:alert_for_route, route_id: affected_route_id)
+        |> Alert.active_starting_at(future_alert_start_time),
+        Alert.build(:alert_for_route, route_id: affected_route_id)
+        |> Alert.active_during(time)
       ]
 
       # Exercise
@@ -246,17 +266,19 @@ defmodule Dotcom.SystemStatus.SubwayTest do
 
       time = time_today()
 
-      effect = Faker.Util.pick(Alerts.service_effects())
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
 
       alerts = [
-        current_alert(route_id: affected_route_id, time: time, effect: effect),
-        current_alert(route_id: affected_route_id, time: time, effect: effect)
+        Alert.build(:alert_for_route, route_id: affected_route_id, effect: effect)
+        |> Alert.active_during(time),
+        Alert.build(:alert_for_route, route_id: affected_route_id, effect: effect)
+        |> Alert.active_during(time)
       ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
 
-      # Verify      
+      # Verify
       multiples =
         groups
         |> status_entries_for(affected_route_id)
@@ -272,17 +294,19 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       time = time_today()
       start_time = time_after(time)
 
-      effect = Faker.Util.pick(Alerts.service_effects())
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
 
       alerts = [
-        future_alert(route_id: affected_route_id, start_time: start_time, effect: effect),
-        future_alert(route_id: affected_route_id, start_time: start_time, effect: effect)
+        Alert.build(:alert_for_route, route_id: affected_route_id, effect: effect)
+        |> Alert.active_starting_at(start_time),
+        Alert.build(:alert_for_route, route_id: affected_route_id, effect: effect)
+        |> Alert.active_starting_at(start_time)
       ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
 
-      # Verify      
+      # Verify
       multiples =
         groups
         |> status_entries_for(affected_route_id)
@@ -297,13 +321,13 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       # Setup
       time = time_today()
 
-      effect = Faker.Util.pick(Alerts.service_effects())
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
 
       alerts =
-        GreenLine.branch_ids()
-        |> Enum.map(fn route_id ->
-          current_alert(route_id: route_id, time: time, effect: effect)
-        end)
+        [
+          Alert.build(:alert_for_routes, route_ids: GreenLine.branch_ids(), effect: effect)
+          |> Alert.active_during(time)
+        ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -322,9 +346,12 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       affected_branch_id = Faker.Util.pick(GreenLine.branch_ids())
 
       time = time_today()
-      effect = Faker.Util.pick(Alerts.service_effects())
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
 
-      alerts = [current_alert(route_id: affected_branch_id, effect: effect, time: time)]
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_branch_id, effect: effect)
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -343,9 +370,12 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       affected_branch_id = Faker.Util.pick(GreenLine.branch_ids())
 
       time = time_today()
-      effect = Faker.Util.pick(Alerts.service_effects())
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
 
-      alerts = [current_alert(route_id: affected_branch_id, effect: effect, time: time)]
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_branch_id, effect: effect)
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -366,9 +396,12 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       affected_branch_id = Faker.Util.pick(GreenLine.branch_ids())
 
       time = time_today()
-      effect = Faker.Util.pick(Alerts.service_effects())
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
 
-      alerts = [current_alert(route_id: affected_branch_id, effect: effect, time: time)]
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_branch_id, effect: effect)
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -395,11 +428,13 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       time = time_today()
 
       [effect1, effect2] =
-        Faker.Util.sample_uniq(2, fn -> Faker.Util.pick(Alerts.service_effects()) end)
+        Faker.Util.sample_uniq(2, fn -> Faker.Util.pick(Alerts.service_impacting_effects()) end)
 
       alerts = [
-        current_alert(route_id: affected_branch_id1, effect: effect1, time: time),
-        current_alert(route_id: affected_branch_id2, effect: effect2, time: time)
+        Alert.build(:alert_for_route, route_id: affected_branch_id1, effect: effect1)
+        |> Alert.active_during(time),
+        Alert.build(:alert_for_route, route_id: affected_branch_id2, effect: effect2)
+        |> Alert.active_during(time)
       ]
 
       # Exercise
@@ -414,6 +449,101 @@ defmodule Dotcom.SystemStatus.SubwayTest do
 
       assert affected_branch_ids == Enum.sort([affected_branch_id1, affected_branch_id2])
     end
+
+    test "groups by green-line branch first, and by effect second" do
+      # Setup
+      affected_branch_id = Faker.Util.pick(GreenLine.branch_ids())
+
+      time = time_today()
+
+      [whole_line_effect, branch_effect] =
+        Faker.Util.sample_uniq(2, fn -> Faker.Util.pick(Alerts.service_impacting_effects()) end)
+
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_branch_id, effect: branch_effect)
+        |> Alert.active_during(time),
+        Alert.build(:alert_for_routes,
+          route_ids: GreenLine.branch_ids(),
+          effect: whole_line_effect
+        )
+        |> Alert.active_during(time)
+      ]
+
+      # Exercise
+      groups = Subway.subway_status(alerts, time)
+
+      # Verify
+      [whole_line_statuses, branch_statuses] =
+        groups
+        |> Map.fetch!("Green")
+
+      assert whole_line_statuses |> Map.fetch!(:branch_ids) == []
+
+      assert whole_line_statuses.status_entries |> Enum.map(& &1.status) == [
+               whole_line_effect
+             ]
+
+      assert branch_statuses |> Map.fetch!(:branch_ids) == [affected_branch_id]
+      assert branch_statuses.status_entries |> Enum.map(& &1.status) == [branch_effect]
+    end
+
+    test "consolidates green line alerts with the same branches and effects" do
+      # Setup
+      affected_branch_id = Faker.Util.pick(GreenLine.branch_ids())
+
+      time = time_today()
+
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
+
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_branch_id, effect: effect)
+        |> Alert.active_during(time),
+        Alert.build(:alert_for_route, route_id: affected_branch_id, effect: effect)
+        |> Alert.active_during(time)
+      ]
+
+      # Exercise
+      groups = Subway.subway_status(alerts, time)
+
+      # Verify
+      statuses =
+        groups
+        |> status_entries_for("Green", [affected_branch_id])
+        |> Enum.map(& &1.multiple)
+
+      assert statuses == [true]
+    end
+
+    test "shows multiple alerts for a given branch, sorted alphabetically" do
+      # Setup
+      affected_branch_id = Faker.Util.pick(GreenLine.branch_ids())
+
+      time = time_today()
+
+      # Sorted in reverse order in order to validate that the sorting
+      # logic works
+      [effect2, effect1] =
+        Faker.Util.sample_uniq(2, fn -> Faker.Util.pick(Alerts.service_impacting_effects()) end)
+        |> Enum.sort(:desc)
+
+      alerts = [
+        Alert.build(:alert_for_route, route_id: affected_branch_id, effect: effect1)
+        |> Alert.active_during(time),
+        Alert.build(:alert_for_route, route_id: affected_branch_id, effect: effect2)
+        |> Alert.active_during(time)
+      ]
+
+      # Exercise
+      groups = Subway.subway_status(alerts, time)
+
+      # Verify
+      statuses =
+        groups
+        |> status_entries_for("Green", [affected_branch_id])
+        |> Enum.map(& &1.status)
+
+      assert statuses == [effect1, effect2]
+    end
   end
 
   describe "red line groups" do
@@ -421,7 +551,10 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       # Setup
       time = time_today()
 
-      alerts = [current_alert(route_id: "Red", time: time)]
+      alerts = [
+        Alert.build(:alert_for_route, route_id: "Red")
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -439,9 +572,12 @@ defmodule Dotcom.SystemStatus.SubwayTest do
     test "shows Mattapan as a branch of Red if it has an alert" do
       # Setup
       time = time_today()
-      effect = Faker.Util.pick(Alerts.service_effects())
+      effect = Faker.Util.pick(Alerts.service_impacting_effects())
 
-      alerts = [current_alert(route_id: "Mattapan", effect: effect, time: time)]
+      alerts = [
+        Alert.build(:alert_for_route, route_id: "Mattapan", effect: effect)
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -459,7 +595,10 @@ defmodule Dotcom.SystemStatus.SubwayTest do
       # Setup
       time = time_today()
 
-      alerts = [current_alert(route_id: "Mattapan", time: time)]
+      alerts = [
+        Alert.build(:alert_for_route, route_id: "Mattapan")
+        |> Alert.active_during(time)
+      ]
 
       # Exercise
       groups = Subway.subway_status(alerts, time)
@@ -512,69 +651,5 @@ defmodule Dotcom.SystemStatus.SubwayTest do
   # Returns a random time between the times provided in the Eastern time zone.
   defp between(time1, time2) do
     Faker.DateTime.between(time1, time2) |> Timex.to_datetime("America/New_York")
-  end
-
-  # Returns a random alert that will be active at the time given by
-  # the required `:time` opt.
-  #
-  # Required opts:
-  #  - route_id
-  #  - time
-  #
-  # Optional opts:
-  #  - effect (default behavior is to choose an effect at random)
-  defp current_alert(opts) do
-    {time, opts} = opts |> Keyword.pop!(:time)
-
-    start_time = time_before(time)
-    end_time = time_after(time)
-
-    opts
-    |> Keyword.put_new(:active_period, [{start_time, end_time}])
-    |> alert()
-  end
-
-  # Returns a random alert whose active_period starts at the provided
-  # `:start_time` opt.
-  #
-  # Required opts:
-  #  - route_id
-  #  - start_time
-  #
-  # Optional opts:
-  #  - effect (default behavior is to choose an effect at random)
-  defp future_alert(opts) do
-    {start_time, opts} = opts |> Keyword.pop!(:start_time)
-
-    opts
-    |> Keyword.put_new(:active_period, [{start_time, time_after(start_time)}])
-    |> alert()
-  end
-
-  # Returns a random alert for the given `:route_id` and
-  # `:active_period` opts.
-  #
-  # Required opts:
-  #  - route_id
-  #  - active_period (Note that this is an array)
-  #
-  # Optional opts:
-  #  - effect (default behavior is to choose an effect at random)
-  defp alert(opts) do
-    route_id = opts |> Keyword.fetch!(:route_id)
-    effect = opts[:effect] || Faker.Util.pick(Alerts.service_effects())
-    active_period = opts |> Keyword.fetch!(:active_period)
-
-    Alert.build(:alert,
-      effect: effect,
-      informed_entity:
-        InformedEntitySet.build(:informed_entity_set,
-          route: route_id,
-          entities: [
-            InformedEntity.build(:informed_entity, route: route_id)
-          ]
-        ),
-      active_period: active_period
-    )
   end
 end

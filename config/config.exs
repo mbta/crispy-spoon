@@ -1,23 +1,20 @@
 import Config
 
-config :elixir, ansi_enabled: true
-
 config :dotcom, :aws_client, AwsClient.Behaviour
 
-config :dotcom, :content_security_policy_definition, ""
 config :dotcom, :cms_api_module, CMS.Api
+
+config :dotcom, :content_security_policy_definition, ""
+
+config :dotcom, :date_time_module, Dotcom.Utils.DateTime
 
 config :dotcom, :httpoison, HTTPoison
 
-config :dotcom, :mbta_api_module, MBTA.Api
-
 config :dotcom, :location_service, LocationService
 
-config :dotcom, :repo_modules,
-  predictions: Predictions.Repo,
-  route_patterns: RoutePatterns.Repo,
-  routes: Routes.Repo,
-  stops: Stops.Repo
+config :dotcom, :mbta_api_module, MBTA.Api
+
+config :dotcom, :otp_module, OpenTripPlannerClient
 
 config :dotcom, :predictions_phoenix_pub_sub, Predictions.Phoenix.PubSub
 config :dotcom, :predictions_pub_sub, Predictions.PubSub
@@ -27,8 +24,18 @@ config :dotcom, :redis, Dotcom.Cache.Multilevel.Redis
 config :dotcom, :redix, Redix
 config :dotcom, :redix_pub_sub, Redix.PubSub
 
-config :dotcom, :otp_module, OpenTripPlannerClient
+config :dotcom, :repo_modules,
+  alerts: Alerts.Repo,
+  predictions: Predictions.Repo,
+  route_patterns: RoutePatterns.Repo,
+  routes: Routes.Repo,
+  stops: Stops.Repo
+
 config :dotcom, :req_module, Req
+
+config :dotcom, :service_rollover_time, ~T[03:00:00]
+
+config :dotcom, :timezone, "America/New_York"
 
 tile_server_url =
   if config_env() == :prod,
@@ -37,10 +44,7 @@ tile_server_url =
 
 config :dotcom, tile_server_url: tile_server_url
 
-config :sentry,
-  enable_source_code_context: true,
-  root_source_code_paths: [File.cwd!()],
-  context_lines: 5
+config :elixir, ansi_enabled: true
 
 config :mbta_metro, custom_icons: ["#{File.cwd!()}/priv/static/icon-svg/*"]
 
@@ -73,5 +77,10 @@ config :mbta_metro, :map, %{
   },
   zoom: 14
 }
+
+config :sentry,
+  enable_source_code_context: true,
+  root_source_code_paths: [File.cwd!()],
+  context_lines: 5
 
 import_config "#{config_env()}.exs"

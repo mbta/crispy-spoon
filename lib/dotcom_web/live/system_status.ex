@@ -115,9 +115,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :suspension,
             header: "Northbound Orange Line trains are suspended due to flooding",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Orange"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Orange"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -125,9 +124,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :delay,
             header: "Southbound Orange Line trains will be delayed due to flooding at 8:30pm",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Orange"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Orange"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -136,9 +134,7 @@ defmodule DotcomWeb.Live.SystemStatus do
             effect: :delay,
             header:
               "Northbound Blue line trains are delayed due to an escaped whale from the aquarium",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Blue"}]
-            }
+            informed_entity: Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Blue"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -147,9 +143,7 @@ defmodule DotcomWeb.Live.SystemStatus do
             effect: :delay,
             header:
               "Southbound Blue line trains are delayed due to an escaped otter from the aquarium",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Blue"}]
-            }
+            informed_entity: Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Blue"}])
           }
         ]
       },
@@ -162,9 +156,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             effect: :shuttle,
             header:
               "Mattapan trains are replaced with shuttles that are just driving on the tracks",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Mattapan"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Mattapan"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -172,9 +165,11 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :station_closure,
             header: "Copley Station is closed due to an overabundance of books",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: GreenLine.branch_ids() |> Enum.map(&%Alerts.InformedEntity{route: &1})
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new(
+                GreenLine.branch_ids()
+                |> Enum.map(&%Alerts.InformedEntity{route: &1})
+              )
           }
         ]
       },
@@ -186,9 +181,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :delay,
             header: "Green line B branch is delayed due to protests at BU",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Green-B"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Green-B"}])
           }
         ]
       },
@@ -200,9 +194,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :delay,
             header: "Green line B branch is delayed due to protests at BU",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Green-B"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Green-B"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -210,9 +203,20 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :station_closure,
             header: "Copley Station is closed due to an over-abundance of books",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: GreenLine.branch_ids() |> Enum.map(&%Alerts.InformedEntity{route: &1})
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new(
+                GreenLine.branch_ids()
+                |> Enum.map(&%Alerts.InformedEntity{route: &1})
+              )
+          },
+          %Alerts.Alert{
+            active_period: [
+              {Timex.beginning_of_day(Timex.now()), Timex.end_of_day(Timex.now())}
+            ],
+            effect: :delay,
+            header: "Green line B branch is delayed due to protests on Comm Ave",
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Green-B"}])
           }
         ]
       },
@@ -224,9 +228,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :suspension,
             header: "Northbound Orange Line trains are suspended due to flooding",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Orange"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Orange"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -234,9 +237,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :delay,
             header: "Southbound Orange Line trains are delayed due to flooding",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Orange"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Orange"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -245,9 +247,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             effect: :shuttle,
             header:
               "Mattapan trains are replaced with shuttles that are just driving on the tracks",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Mattapan"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Mattapan"}])
           }
         ]
       },
@@ -259,9 +260,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :delay,
             header: "Green line B branch is delayed due to protests at BU",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Green-B"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Green-B"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -269,9 +269,8 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :station_closure,
             header: "Riverside station is closed due to a red line train on the tracks",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Green-D"}]
-            }
+            informed_entity:
+              Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Green-D"}])
           },
           %Alerts.Alert{
             active_period: [
@@ -279,9 +278,7 @@ defmodule DotcomWeb.Live.SystemStatus do
             ],
             effect: :station_closure,
             header: "Alewife station is closed due to a green line train on the tracks",
-            informed_entity: %Alerts.InformedEntitySet{
-              entities: [%Alerts.InformedEntity{route: "Red"}]
-            }
+            informed_entity: Alerts.InformedEntitySet.new([%Alerts.InformedEntity{route: "Red"}])
           }
         ]
       }

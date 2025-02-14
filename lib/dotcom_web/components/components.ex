@@ -6,6 +6,12 @@ defmodule DotcomWeb.Components do
   """
   use Phoenix.Component
 
+  use Phoenix.VerifiedRoutes,
+    endpoint: DotcomWeb.Endpoint,
+    router: DotcomWeb.Router
+
+  embed_templates "layouts/*"
+
   attr(:id, :string, required: true, doc: "A unique identifier for this search input.")
 
   attr(:placeholder, :string,
@@ -83,6 +89,105 @@ defmodule DotcomWeb.Components do
     <div class={"error-container rounded #{@padding_class}"}>
       <p :if={@title} class="font-bold mb-2">{@title}</p>
       {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  slot(:heading, required: false, doc: "Large title shown at top of container.")
+  slot(:inner_block, required: true)
+  attr(:hide_divider, :boolean, required: false, default: false)
+
+  @doc """
+  A generic "card" sort of component, with an optional large header block.
+
+  Example usage:
+
+  ```elixir
+  <.bordered_container>
+    <:heading>Title on Top</:heading>
+    <p class="text-yellow-600">
+      <strong>Whatever</strong> else inside.
+    </p>
+  </.bordered_container>
+  ```
+
+  Can omit the divider between the heading and content using
+  `hide_divider={true}`.
+
+  ```elixir
+  <.bordered_container hide_divider>
+    <:heading>
+      <div class="flex justify-between">
+        Slightly elaborate
+        <mark>Thing</mark>
+      </div>
+    </:heading>
+    <p class="border-t-4 border-t-brand-primary p-6 bg-brand-primary-lightest">
+      Got my own dividing line
+    </p>
+  </.bordered_container>
+  ```
+  """
+  def bordered_container(assigns) do
+    ~H"""
+    <div class="px-5 py-4 border-[1px] bg-white border-gray-lightest rounded-lg">
+      <div :if={@heading} class="font-heading font-bold text-[1.75rem] text-nowrap">
+        {render_slot(@heading)}
+      </div>
+      <hr :if={!@hide_divider} class="h-px my-2 bg-gray-lightest border-0" />
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  slot(:inner_block, required: true)
+  attr(:items, :list, required: true)
+
+  @doc """
+  Generic list with a faint dividing line between list items. The `@inner_block`
+  gets repeated for every list item.
+
+  Example usage:
+
+  ```elixir
+  <.lined_list :let={stop} items={@stops}>
+    <p class="p-1 m-0 text-xl">
+      {stop.name} @ {stop.address}
+    </p>
+  </.lined_list>
+  ```
+
+  Not recommended but possible: Removing or altering the dividing line can be
+  done on a per-line basis by wrapping the line with an element which redefines
+  the Tailwind CSS properties affecting the `divide-y` helper.
+
+  ```elixir
+  <.lined_list :let={thing} items={@things}>
+    <%= if thing.important do %>
+      <div style="--tw-divide-y-reverse: 10">
+        {stop.name} has larger bottom border width
+      </div>
+    <% else %>
+      <%= if thing.sequence > 1 do %>
+        <div style="--tw-divide-opacity: 0" class="border-dashed border-t-2">
+          {stop.name} has custom top border
+        </div>
+      <% else %>
+        {stop.name} has default border
+      <% end %>
+    <% end %>
+  </.lined_list>
+  ```
+
+  Not recommended for simple lists which should use `<ul>` or `<ol>`, as this
+  does not implement the ARIA role for "list".
+  """
+  def lined_list(assigns) do
+    ~H"""
+    <div class="border-gray-lightest border-y-[1px] divide-gray-lightest divide-y-[1px]">
+      <%= for item <- @items do %>
+        {render_slot(@inner_block, item)}
+      <% end %>
     </div>
     """
   end

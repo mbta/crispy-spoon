@@ -126,12 +126,13 @@ defmodule DotcomWeb.EventController do
     title
     |> String.downcase()
     |> String.replace(" ", "_")
-    |> decode_ampersand_html_entity
+    |> URI.encode_www_form()
+    |> decode_ampersand_html_entity()
   end
 
   @spec decode_ampersand_html_entity(String.t()) :: String.t()
   defp decode_ampersand_html_entity(string) do
-    String.replace(string, "&amp;", "&")
+    String.replace(string, "%26", "&")
   end
 
   @doc "Returns a list of years with which we can filter events.

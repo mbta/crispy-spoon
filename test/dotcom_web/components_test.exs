@@ -55,4 +55,77 @@ defmodule DotcomWeb.ComponentsTest do
              """) =~ assigns.content
     end
   end
+
+  describe "bordered_container" do
+    test "renders header and content with a divider line" do
+      assigns = %{
+        title: Faker.Lorem.sentence(1..3),
+        content: Faker.Lorem.sentence(3..5)
+      }
+
+      str =
+        rendered_to_string(~H"""
+        <.bordered_container>
+          <:heading>
+            <span>{assigns.title}</span>
+          </:heading>
+          {assigns.content}
+        </.bordered_container>
+        """)
+
+      assert str =~ assigns.title
+      assert str =~ assigns.content
+
+      assert Floki.parse_fragment!(str)
+             |> Floki.find("hr")
+             |> Enum.count()
+    end
+
+    test "optionally hides the dividing line" do
+      assigns = %{
+        title: Faker.Lorem.sentence(1..3),
+        content: Faker.Lorem.sentence(3..5)
+      }
+
+      str =
+        rendered_to_string(~H"""
+        <.bordered_container hide_divider>
+          <:heading>
+            <span>{assigns.title}</span>
+          </:heading>
+          {assigns.content}
+        </.bordered_container>
+        """)
+
+      assert str =~ assigns.title
+      assert str =~ assigns.content
+
+      assert Floki.parse_fragment!(str)
+             |> Floki.find("hr") == []
+    end
+  end
+
+  describe "lined_list" do
+    test "shows inner block for each item" do
+      assigns = %{
+        items: Faker.Lorem.sentences()
+      }
+
+      rendered_items =
+        rendered_to_string(~H"""
+        <.lined_list :let={sentence} items={@items}>
+          <p>{sentence}</p>
+        </.lined_list>
+        """)
+        |> Floki.parse_fragment!()
+        |> Floki.find("p")
+
+      assert Enum.count(rendered_items) == Enum.count(assigns.items)
+      rendered_content = Enum.flat_map(rendered_items, fn {"p", _, content} -> content end)
+
+      for sentence <- assigns.items do
+        assert sentence in rendered_content
+      end
+    end
+  end
 end

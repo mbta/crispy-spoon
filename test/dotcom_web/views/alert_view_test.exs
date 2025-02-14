@@ -444,19 +444,6 @@ defmodule DotcomWeb.AlertViewTest do
     end
   end
 
-  test "mode_buttons" do
-    assert [subway | rest] =
-             :subway
-             |> mode_buttons()
-             |> Enum.map(&safe_to_string/1)
-
-    assert subway =~ "m-alerts__mode-button--selected"
-
-    for mode <- rest do
-      refute mode =~ "m-alerts__mode-button--selected"
-    end
-  end
-
   describe "show_systemwide_alert?/1" do
     setup do
       banner_template = "_alert_announcement.html"

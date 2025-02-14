@@ -5,6 +5,7 @@ defmodule DotcomWeb.Components.SystemStatus.SubwayStatus do
 
   use DotcomWeb, :component
 
+  import DotcomWeb.Components, only: [bordered_container: 1, lined_list: 1]
   import DotcomWeb.Components.RoutePills
   import DotcomWeb.Components.SystemStatus.StatusLabel
 
@@ -16,41 +17,43 @@ defmodule DotcomWeb.Components.SystemStatus.SubwayStatus do
     assigns = assigns |> assign(:rows, status_to_rows(assigns.subway_status))
 
     ~H"""
-    <div class="px-5 py-4 border-[1px] border-gray-lightest rounded-lg w-96">
-      <div class="border-gray-lightest border-b-[1px] pl-2 pb-3 flex items-center gap-2">
-        <.icon type="icon-svg" name="icon-mode-subway-default" class="h-7 w-7" />
-        <span class="font-heading font-bold text-[1.75rem]">Subway Status</span>
-      </div>
-      <a
-        :for={row <- @rows}
-        href={row.route_info.url}
-        class={[
-          "flex gap-2",
-          !row.style.short_bottom_border && "border-gray-lightest border-b-[1px]",
-          "hover:bg-brand-primary-lightest cursor-pointer group/row",
-          "text-black no-underline"
-        ]}
-      >
-        <div class={["pl-2 py-3", row.style.hide_route_pill && "invisible"]}>
-          <.route_pill
-            route_id={row.route_info.route_id}
-            modifier_ids={row.route_info.branch_ids}
-            modifier_class="group-hover/row:ring-brand-primary-lightest"
-          />
+    <.bordered_container hide_divider>
+      <:heading>
+        <div class="px-2 flex items-center gap-2 mb-sm">
+          <.icon type="icon-svg" name="icon-mode-subway-default" class="h-7 w-7" /> Subway Status
         </div>
-        <div class={[
-          "py-3 w-full flex items-center",
-          row.style.short_bottom_border && "border-b-[1px] border-gray-lightest"
-        ]}>
-          <.status_label
-            status={row.status_entry.status}
-            prefix={row.status_entry.prefix}
-            plural={row.status_entry.plural}
-          />
-          <.icon name="chevron-right" class="h-3 w-2 fill-gray-lighter ml-auto mr-3" />
-        </div>
-      </a>
-    </div>
+      </:heading>
+      <.lined_list :let={row} items={@rows}>
+        <a
+          href={row.route_info.url}
+          style={if(row.style.hide_route_pill, do: "--tw-divide-opacity: 0")}
+          class={[
+            "flex gap-2",
+            "hover:bg-brand-primary-lightest cursor-pointer group/row",
+            "text-black no-underline"
+          ]}
+        >
+          <div class={["pl-2 py-3", row.style.hide_route_pill && "invisible"]}>
+            <.route_pill
+              route_id={row.route_info.route_id}
+              modifier_ids={row.route_info.branch_ids}
+              modifier_class="group-hover/row:ring-brand-primary-lightest"
+            />
+          </div>
+          <div class={[
+            "flex items-center justify-between grow text-nowrap gap-sm",
+            row.style.hide_route_pill && "border-t-[1px] border-gray-lightest"
+          ]}>
+            <.status_label
+              status={row.status_entry.status}
+              prefix={row.status_entry.prefix}
+              plural={row.status_entry.plural}
+            />
+            <.icon name="chevron-right" class="h-3 w-2 fill-gray-lighter ml-3 mr-2" />
+          </div>
+        </a>
+      </.lined_list>
+    </.bordered_container>
     """
   end
 
@@ -90,7 +93,6 @@ defmodule DotcomWeb.Components.SystemStatus.SubwayStatus do
 
     status_entries
     |> Enum.map(&row_for_status_entry(&1, show_prefix))
-    |> add_short_intermediate_borders()
     |> show_first_route_pill()
   end
 
@@ -106,8 +108,7 @@ defmodule DotcomWeb.Components.SystemStatus.SubwayStatus do
         prefix: prefix
       },
       style: %{
-        hide_route_pill: true,
-        short_bottom_border: false
+        hide_route_pill: true
       }
     }
   end
@@ -126,17 +127,6 @@ defmodule DotcomWeb.Components.SystemStatus.SubwayStatus do
     [
       first_entry |> put_in([:style, :hide_route_pill], false)
       | rest_of_entries
-    ]
-  end
-
-  defp add_short_intermediate_borders([entry]) do
-    [entry]
-  end
-
-  defp add_short_intermediate_borders([first_entry | rest_of_entries]) do
-    [
-      first_entry |> put_in([:style, :short_bottom_border], true)
-      | add_short_intermediate_borders(rest_of_entries)
     ]
   end
 

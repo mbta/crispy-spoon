@@ -5,13 +5,9 @@ defmodule Dotcom.SystemStatus.Alerts do
   belong in the main `Alerts` module.
   """
 
+  import Dotcom.Alerts, only: [service_impacting_alert?: 1]
+
   @type service_effect_t :: :delay | :shuttle | :suspension | :station_closure
-  @service_effects [:delay, :shuttle, :suspension, :station_closure]
-  @doc """
-  Returns a list of the alert effects that are considered
-  service-impacting.
-  """
-  def service_effects(), do: @service_effects
 
   @doc """
   Returns `true` if the alert is active at some point during the day
@@ -92,7 +88,7 @@ defmodule Dotcom.SystemStatus.Alerts do
   }
   """
   def filter_relevant(alerts) do
-    alerts |> Enum.filter(fn %{effect: effect} -> effect in @service_effects end)
+    alerts |> Enum.filter(&service_impacting_alert?/1)
   end
 
   # Returns true if the alert (as signified by the active_period_start provided)

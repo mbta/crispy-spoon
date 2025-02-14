@@ -232,31 +232,6 @@ defmodule DotcomWeb.AlertView do
 
   defp show_mode_icon?(%Route{}), do: true
 
-  @spec mode_buttons(atom) :: [Phoenix.HTML.Safe.t()]
-  def mode_buttons(selected) do
-    for mode <- [:subway, :bus, :commuter_rail, :ferry, :access] do
-      link(
-        [
-          content_tag(
-            :div,
-            [
-              content_tag(:div, type_icon(mode), class: "m-alerts__mode-icon"),
-              content_tag(:div, type_name(mode), class: "m-alerts__mode-name")
-            ],
-            class:
-              if mode == selected do
-                "m-alerts__mode-button m-alerts__mode-button--selected"
-              else
-                "m-alerts__mode-button"
-              end
-          )
-        ],
-        to: alert_path(DotcomWeb.Endpoint, :show, mode),
-        class: "m-alerts__mode-button-container"
-      )
-    end
-  end
-
   @spec show_systemwide_alert?(map) :: boolean
   def show_systemwide_alert?(%{
         alert_banner: alert_banner,
@@ -278,12 +253,12 @@ defmodule DotcomWeb.AlertView do
   end
 
   @spec type_name(atom) :: String.t()
-  defp type_name(:commuter_rail), do: "Rail"
-  defp type_name(mode), do: mode_name(mode)
+  def type_name(:commuter_rail), do: "Rail"
+  def type_name(mode), do: mode_name(mode)
 
   @spec type_icon(atom) :: Phoenix.HTML.Safe.t()
-  defp type_icon(:access), do: svg("icon-accessible-default.svg")
-  defp type_icon(mode), do: mode_icon(mode, :default)
+  def type_icon(:access), do: svg("icon-accessible-default.svg")
+  def type_icon(mode), do: mode_icon(mode, :default)
 
   @spec alert_icon(Alert.icon_type()) :: Phoenix.HTML.Safe.t()
   defp alert_icon(:shuttle), do: svg("icon-shuttle-default.svg")

@@ -1,6 +1,0 @@
-<% unique_id = Integer.to_string(:erlang.unique_integer) %>
-<ul class="c-alert-group">
-  <%= for alert <- @alerts do %>
-    <%= render "_item.html", alert: alert, extra_id: unique_id, time: @time %>
-  <% end %>
-</ul>

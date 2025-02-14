@@ -141,6 +141,7 @@ defmodule DotCom.Mixfile do
       {:sentry, "10.8.1"},
       {:server_sent_event_stage, "1.2.1"},
       {:sizeable, "1.0.2"},
+      {:stream_data, "1.1.3", only: [:dev, :test]},
       {:sweet_xml, "0.7.5", only: [:dev, :prod]},
       {:telemetry, "1.3.0", override: true},
       {:telemetry_metrics, "1.1.0", override: true},

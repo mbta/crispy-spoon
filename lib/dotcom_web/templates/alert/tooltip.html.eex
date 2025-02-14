@@ -1,5 +1,0 @@
-<% text = "There is an alert for this service that may affect your trip" %>
-<span class="alert-icon">
-  <%= fa "exclamation-triangle", title: text, "data-toggle": "tooltip" %>
-</span>
-<span class="sr-only"><%= text %></span>
