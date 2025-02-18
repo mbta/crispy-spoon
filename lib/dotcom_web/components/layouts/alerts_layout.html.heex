@@ -5,13 +5,13 @@
     </div>
     <div class="row">
       <div class="col-lg-3">
-        {render_slot(@sidebar_top)}
-        <div class="hidden-md-down">
+        {if(@sidebar_top, do: render_slot(@sidebar_top))}
+        <div :if={@sidebar_bottom} class="hidden-md-down">
           {render_slot(@sidebar_bottom)}
         </div>
       </div>
       <div class="col-lg-8 col-lg-offset-1">
-        <div class="m-alerts__mode-buttons">
+        <div class="m-alerts__mode-buttons mb-lg">
           <a
             :for={mode <- [:subway, :bus, :commuter_rail, :ferry, :access]}
             href={~p"/alerts/#{mode}"}
@@ -29,7 +29,7 @@
 
         {render_slot(@main_section)}
 
-        <div class="hidden-lg-up">
+        <div :if={@sidebar_bottom} class="hidden-lg-up">
           {render_slot(@sidebar_bottom)}
         </div>
       </div>

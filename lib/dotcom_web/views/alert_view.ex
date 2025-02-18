@@ -4,10 +4,11 @@ defmodule DotcomWeb.AlertView do
   use DotcomWeb, :view
 
   import DotcomWeb.ViewHelpers
+  import DotcomWeb.Components.RoutePills, only: [route_pill: 1]
+  import DotcomWeb.Components.SystemStatus.SubwayStatus, only: [subway_status: 1]
   import PhoenixHTMLHelpers.Tag, only: [content_tag: 3]
 
   alias Alerts.{Alert, InformedEntity, InformedEntitySet, URLParsingHelpers}
-  alias DotcomWeb.PartialView.SvgIconWithCircle
   alias Routes.Route
   alias Stops.Stop
 
@@ -213,9 +214,7 @@ defmodule DotcomWeb.AlertView do
   defp group_header_name(%Route{long_name: long_name, name: name, type: 3}) do
     [
       name,
-      content_tag(:span, long_name,
-        class: "font-heading font-bold mt-11 mb-3 text-2xl m-alerts-header__long-name"
-      )
+      content_tag(:span, long_name, class: "pl-md text-lg")
     ]
   end
 

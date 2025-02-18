@@ -1,6 +1,5 @@
-<% show_systemwide_alert? = show_systemwide_alert?(assigns) %>
 <.alerts_layout mode={@id}>
-  <:sidebar_top>
+  <:sidebar_top :if={@id != :subway}>
     {DotcomWeb.PartialView.alert_time_filters(@alerts_timeframe,
       method: :alert_path,
       item: @id
@@ -10,47 +9,67 @@
     {render("_t-alerts.html")}
   </:sidebar_bottom>
   <:main_section>
-    <%= if show_systemwide_alert? do %>
-      <div class="m-alerts-header">
-        <h2 class="m-alerts-header__name--systemwide">Systemwide</h2>
-        <span class="m-alerts-header__icon">
-          {DotcomWeb.PartialView.SvgIconWithCircle.svg_icon_with_circle(%SvgIconWithCircle{
-            icon: :t_logo,
-            aria_hidden?: true
-          })}
-        </span>
+    <.subway_status
+      :if={@id == :subway && assigns[:subway_status]}
+      subway_status={@subway_status}
+    />
+    <section :if={@id == :subway} class="border-[1px] border-gray-lightest rounded-lg my-xl p-md">
+      <h2 class="leading-none mt-0 mb-md">Planned Work</h2>
+      <div class="p-28 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-2xl text-center rounded-xl opacity-15">
+        TBD
       </div>
-      <div class="c-alert-group">
-        {render("_item.html",
-          alert: %{Alerts.Repo.by_id(@alert_banner.id) | priority: :system},
-          date_time: @date_time
-        )}
-      </div>
-    <% end %>
-    <% timeframe = format_alerts_timeframe(@alerts_timeframe) %>
-    <%= for {route_or_stop, alerts} <- @alert_groups do %>
-      <div class="m-alerts-header">
-        <%= link to: group_header_path(route_or_stop), class: "m-alerts-header__link" do %>
-          <h3 class="m-alerts-header__name">{group_header_name(route_or_stop)}</h3>
-        <% end %>
-        <%= if show_mode_icon?(route_or_stop) do %>
-          <%= link to: group_header_path(route_or_stop), class: "m-alerts-header__icon" do %>
-            <.route_icon route={route_or_stop} />
+    </section>
+    <section>
+      <h2 :if={@id == :subway} class="mt-0 mb-0">Station & Service Alerts</h2>
+      <h2 :if={@id != :subway} class="sr-only">All Alerts</h2>
+      <% show_systemwide_alert? = show_systemwide_alert?(assigns) %>
+      <%= if show_systemwide_alert? do %>
+        <div class="m-alerts-header">
+          <h3 class="leading-none m-0">Systemwide</h3>
+        </div>
+        <div class="c-alert-group">
+          {render("_item.html",
+            alert: %{Alerts.Repo.by_id(@alert_banner.id) | priority: :system},
+            date_time: @date_time
+          )}
+        </div>
+      <% end %>
+      <% timeframe = format_alerts_timeframe(@alerts_timeframe) %>
+      <%= for {route_or_stop, alerts} <- @alert_groups do %>
+        <div :if={@id != :subway} class="m-alerts-header">
+          <%= link to: group_header_path(route_or_stop), class: "m-alerts-header__link" do %>
+            <h3 class="m-alerts-header__name">{group_header_name(route_or_stop)}</h3>
           <% end %>
-        <% end %>
-      </div>
-      <div>
-        {DotcomWeb.AlertView.group(
-          alerts: alerts,
-          route: route_or_stop,
-          date_time: @date_time
-        )}
-      </div>
-    <% end %>
-    <%= if Enum.empty?(@alert_groups) && !show_systemwide_alert? do %>
-      <div class="m-alerts__notice--no-alerts">
-        There are no {timeframe} {mode_name(@id)} alerts at this time.
-      </div>
-    <% end %>
+          <%= if show_mode_icon?(route_or_stop) do %>
+            <%= link to: group_header_path(route_or_stop), class: "m-alerts-header__icon" do %>
+              <.route_icon route={route_or_stop} />
+            <% end %>
+          <% end %>
+        </div>
+        <div :if={@id == :subway} class="m-alerts-header">
+          <%= link to: group_header_path(route_or_stop), class: "inline-flex align-items-center no-underline text-black gap-sm py-xs hover:text-brand-primary" do %>
+            <.route_pill
+              route_id={route_or_stop.id}
+              modifier_ids={
+                if(route_or_stop.id in GreenLine.branch_ids(), do: [route_or_stop.id], else: [])
+              }
+            />
+            <h3 class="m-0">{group_header_name(route_or_stop)}</h3>
+          <% end %>
+        </div>
+        <div>
+          {DotcomWeb.AlertView.group(
+            alerts: alerts,
+            route: route_or_stop,
+            date_time: @date_time
+          )}
+        </div>
+      <% end %>
+      <%= if Enum.empty?(@alert_groups) && !show_systemwide_alert? do %>
+        <div class="m-alerts__notice--no-alerts">
+          There are no {timeframe} {mode_name(@id)} alerts at this time.
+        </div>
+      <% end %>
+    </section>
   </:main_section>
 </.alerts_layout>
