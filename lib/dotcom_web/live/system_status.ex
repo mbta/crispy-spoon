@@ -15,44 +15,18 @@ defmodule DotcomWeb.Live.SystemStatus do
   def render(assigns) do
     alerts = SystemStatus.subway_alerts_for_today()
 
-    statuses = SystemStatus.subway_status()
-
-    examples =
-      alerts_examples()
-      |> Enum.map(fn %{alerts: alerts} = example ->
-        example
-        |> Map.put(
-          :statuses,
-          SystemStatus.Subway.subway_status(alerts, Timex.now() |> Timex.set(hour: 12))
-        )
-      end)
-
     assigns =
       assigns
       |> assign(:alerts, alerts)
-      |> assign(:statuses, statuses)
-      |> assign(:examples, examples)
+      |> assign(:examples, alerts_examples())
 
     ~H"""
     <h1>Live Data</h1>
-    <.homepage_subway_status subway_status={@statuses} />
-
-    <h2>Alerts</h2>
-    <div class="flex flex-col gap-2">
-      <.alert :for={alert <- @alerts} alert={alert} />
-    </div>
+    <.example_table alerts={@alerts} />
 
     <h1>Examples</h1>
     <div :for={example <- @examples} class="mb-4">
-      <div class="flex gap-5">
-        <div>
-          <.homepage_subway_status subway_status={example.statuses} />
-        </div>
-        <div class="flex flex-col gap-5">
-          <span class="text-lg font-bold">Alerts</span>
-          <.alert :for={alert <- example.alerts} alert={alert} />
-        </div>
-      </div>
+      <.example_table alerts={example.alerts} />
     </div>
 
     <h1>Misc Components</h1>
@@ -87,27 +61,31 @@ defmodule DotcomWeb.Live.SystemStatus do
     """
   end
 
-  defp alert(assigns) do
+  defp example_table(assigns) do
+    subway_status =
+      SystemStatus.Subway.subway_status(assigns.alerts, Timex.now() |> Timex.set(hour: 12))
+
+    assigns = assign(assigns, :subway_status, subway_status)
+
     ~H"""
-    <details class="border border-gray-lighter p-2">
-      <summary>
-        <div>
-          <span class="font-bold">{@alert.effect}:</span>
-          <span class="italic">
-            {@alert.informed_entity
-            |> Enum.map(& &1.route)
-            |> Enum.uniq()
-            |> Enum.sort()
-            |> Enum.join(", ")}
-          </span>
-        </div>
-        <span>{@alert.header}</span>
-      </summary>
-      <details>
-        <summary>Raw alert</summary>
-        <pre>{inspect(@alert, pretty: true)}</pre>
-      </details>
-    </details>
+    <table class="w-full">
+      <tr>
+        <th class="bg-slate-700 text-white p-2 text-lg">Homepage component</th>
+        <th class="bg-slate-700 text-white p-2 text-lg">Alerts page component</th>
+        <th class="bg-slate-700 text-white p-2 text-lg">Alerts data</th>
+      </tr>
+      <tr>
+        <td class="bg-slate-600 p-2 w-1/3 align-top">
+          <.homepage_subway_status subway_status={@subway_status} />
+        </td>
+        <td class="bg-slate-600 p-2 w-1/3 align-top">
+          <.alerts_subway_status subway_status={@subway_status} />
+        </td>
+        <td class="bg-slate-600 p-2 w-1/3 align-top">
+          {Phoenix.View.render_many(@alerts, DotcomWeb.AlertView, "_item.html", date_time: Util.now())}
+        </td>
+      </tr>
+    </table>
     """
   end
 
