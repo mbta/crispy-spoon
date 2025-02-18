@@ -10,6 +10,8 @@ defmodule DotcomWeb.Components do
     endpoint: DotcomWeb.Endpoint,
     router: DotcomWeb.Router
 
+  import MbtaMetro.Components.Icon
+
   embed_templates "layouts/*"
 
   attr(:id, :string, required: true, doc: "A unique identifier for this search input.")
@@ -189,6 +191,40 @@ defmodule DotcomWeb.Components do
         {render_slot(@inner_block, item)}
       <% end %>
     </div>
+    """
+  end
+
+  slot(:content, required: true)
+  slot(:heading, required: true)
+  attr(:class, :string, default: "Class names applied to the underlying <details> element.")
+
+  attr(:summary_class, :string,
+    default: "",
+    doc: "Class names applied to the underlying <summary> element."
+  )
+
+  attr(:chevron_class, :string, default: "Class names applied to the chevron icon.")
+  attr(:rest, :global)
+
+  @doc """
+  An accordion component optimized for custom styling. Only the caret open/close
+  rotation is provided.
+
+  The `@class` attribute and arbitrary HTML attributes included in
+  `<.unstyled_accordion />` will be applied to the underlying `<details>`
+  element. The `@summary_class` attribute is applied to the underlying
+  `<summary>` element, and `@chevron_class` is required to style the underlying
+  chevron icon.
+  """
+  def unstyled_accordion(assigns) do
+    ~H"""
+    <details class={"#{@class} group"} {@rest}>
+      <summary class={"#{@summary_class} cursor-pointer"}>
+        {render_slot(@heading)}
+        <.icon name="chevron-down" class={"#{@chevron_class} shrink-0 group-open:rotate-180"} />
+      </summary>
+      {render_slot(@content)}
+    </details>
     """
   end
 end

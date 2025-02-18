@@ -13,7 +13,7 @@ defmodule DotcomWeb.Components.RouteSymbols do
   @logan_express_icon_names Route.logan_express_icon_names()
   @massport_icon_names Route.massport_icon_names()
   @subway_branch_ids Dotcom.Routes.subway_branch_ids()
-  @subway_line_names Dotcom.Routes.subway_line_names()
+  @subway_line_ids Dotcom.Routes.subway_line_ids()
 
   variant(
     :size,
@@ -190,7 +190,7 @@ defmodule DotcomWeb.Components.RouteSymbols do
   Renders a symbol for one or more subway routes, consisting of a colored pill
   with optionally a number of circles representing branches of a subway line.
   """
-  def subway_route_pill(%{route_ids: [route_id]} = assigns) when route_id in @subway_line_names do
+  def subway_route_pill(%{route_ids: [route_id]} = assigns) when route_id in @subway_line_ids do
     assigns =
       assign(assigns, %{
         bg_color_class: "bg-#{String.downcase(route_id)}-line",
@@ -223,8 +223,8 @@ defmodule DotcomWeb.Components.RouteSymbols do
   # A list of any length - find the relevant subway line. If there's any number
   # of subway lines represented here other than one, fall back to subway icon.
   def subway_route_pill(%{route_ids: route_ids} = assigns) when is_list(route_ids) do
-    with subway_line_names <- Enum.map(route_ids, &subway_line_name/1),
-         [subway_line_name] <- Enum.uniq(subway_line_names) |> Enum.reject(&is_nil/1) do
+    with subway_line_ids <- Enum.map(route_ids, &subway_line_name/1),
+         [subway_line_name] <- Enum.uniq(subway_line_ids) |> Enum.reject(&is_nil/1) do
       branch_ids = Enum.reject(assigns.route_ids, &(&1 == subway_line_name)) |> Enum.sort()
 
       if branch_ids == GreenLine.branch_ids() do
@@ -288,6 +288,6 @@ defmodule DotcomWeb.Components.RouteSymbols do
     Dotcom.Routes.line_name_for_subway_route(route_id)
   end
 
-  defp subway_line_name(route_id) when route_id in @subway_line_names, do: route_id
+  defp subway_line_name(route_id) when route_id in @subway_line_ids, do: route_id
   defp subway_line_name(_), do: nil
 end

@@ -102,7 +102,7 @@ defmodule DotCom.Mixfile do
       {:httpoison, "2.2.1"},
       {:inflex, "2.1.0"},
       {:jason, "1.4.4", override: true},
-      {:kino_live_component, "0.0.4"},
+      {:kino_live_component, "0.0.5"},
       {:logster, "1.1.1"},
       {:mail, "0.3.1"},
       {:mbta_metro, "0.1.21"},

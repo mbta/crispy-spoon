@@ -33,11 +33,16 @@ defmodule Dotcom.Alerts.Disruptions.Subway do
   # 1. Gets all alerts for subway routes.
   # 2. Filters out non-service-impacting alerts
   # 3. Groups them according to service range.
+  # 4. Sorts the alerts within the group by start time.
   defp disruption_groups() do
     subway_route_ids()
     |> @alerts_repo.by_route_ids(Utils.DateTime.now())
     |> Enum.filter(&service_impacting_alert?/1)
     |> Enum.reduce(%{}, &group_alerts/2)
+    |> Enum.map(fn {group, alerts} ->
+      {group, sort_alerts_by_start_time(alerts)}
+    end)
+    |> Enum.into(%{})
   end
 
   # Looks at every active period for an alert and groups that alert by service range.
@@ -51,5 +56,16 @@ defmodule Dotcom.Alerts.Disruptions.Subway do
     |> Enum.reduce(groups, fn service_range, groups ->
       Map.update(groups, service_range, [alert], &(&1 ++ [alert]))
     end)
+  end
+
+  # Sorts alerts by the start time of the first active period.
+  defp sort_alerts_by_start_time(alerts) do
+    alerts
+    |> Enum.sort_by(
+      fn alert ->
+        alert |> Map.get(:active_period, [{nil, nil}]) |> List.first() |> Kernel.elem(0)
+      end,
+      :asc
+    )
   end
 end

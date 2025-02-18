@@ -6,15 +6,17 @@ defmodule DotcomWeb.Live.SystemStatus do
 
   use DotcomWeb, :live_view
 
-  import DotcomWeb.Components.RouteSymbols, only: [subway_route_pill: 1]
+  import DotcomWeb.Components.PlannedDisruptions
+  import DotcomWeb.Components.RouteSymbols
   import DotcomWeb.Components.SystemStatus.StatusLabel
   import DotcomWeb.Components.SystemStatus.SubwayStatus
 
+  alias Dotcom.Alerts.Disruptions
   alias Dotcom.SystemStatus
 
   def render(assigns) do
     alerts = SystemStatus.subway_alerts_for_today()
-
+    disruptions = Disruptions.Subway.future_disruptions()
     statuses = SystemStatus.subway_status()
 
     examples =
@@ -30,6 +32,7 @@ defmodule DotcomWeb.Live.SystemStatus do
     assigns =
       assigns
       |> assign(:alerts, alerts)
+      |> assign(:disruptions, disruptions)
       |> assign(:statuses, statuses)
       |> assign(:examples, examples)
 
@@ -84,6 +87,8 @@ defmodule DotcomWeb.Live.SystemStatus do
         <.subway_route_pill route_ids={ids} class="group-hover/row:ring-slate-600" /> {inspect(ids)}
       </div>
     <% end %>
+    <hr id="planned-disruptions" />
+    <.disruptions disruptions={@disruptions} />
     """
   end
 

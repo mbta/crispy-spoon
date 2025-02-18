@@ -104,7 +104,7 @@ defmodule DotcomWeb.Components.RouteSymbolsTest do
 
   describe "subway_route_pill/1" do
     test "Subway lines render one element" do
-      for route_id <- Dotcom.Routes.subway_line_names() do
+      for route_id <- Dotcom.Routes.subway_line_ids() do
         html =
           render_component(&subway_route_pill/1, %{
             route_ids: [route_id]

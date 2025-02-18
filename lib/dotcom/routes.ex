@@ -5,17 +5,36 @@ defmodule Dotcom.Routes do
 
   alias Routes.Route
 
-  @subway_branch_ids GreenLine.branch_ids() ++ ["Mattapan"]
-  @subway_line_names ["Blue", "Green", "Orange", "Red"]
+  @subway_line_ids ["Blue", "Green", "Orange", "Red"]
+  @green_line_branch_ids Enum.map(["B", "C", "D", "E"], fn branch -> "Green-#{branch}" end)
+  @red_line_branch_ids ["Mattapan"]
 
-  # Association of subway line names to all their respective subway routes.
+  # Association of subway *line* ids to their respective *branch* ids.
   # This could later be derived from the GTFS line/route relationships.
   @subway_line_route_map %{
     "Blue" => ["Blue"],
-    "Green" => GreenLine.branch_ids(),
+    "Green" => ["Green"] ++ @green_line_branch_ids,
     "Orange" => ["Orange"],
-    "Red" => ["Red", "Mattapan"]
+    "Red" => ["Red"] ++ @red_line_branch_ids
   }
+
+  @doc """
+  Returns a list of all subway route IDs which we'd like to show as branches.
+  """
+  @spec subway_branch_ids() :: [Route.id_t()]
+  def subway_branch_ids, do: @green_line_branch_ids ++ @red_line_branch_ids
+
+  @doc """
+  Returns a list of subway lines.
+  """
+  @spec subway_line_ids() :: [Route.id_t()]
+  def subway_line_ids, do: @subway_line_ids
+
+  @doc """
+  Returns the list of all subway route IDs.
+  """
+  @spec subway_route_ids() :: [Route.id_t()]
+  def subway_route_ids, do: Map.values(@subway_line_route_map) |> List.flatten()
 
   @doc """
   For a given route ID, return the relevant subway line name.
@@ -34,22 +53,4 @@ defmodule Dotcom.Routes do
       line_name
     end
   end
-
-  @doc """
-  Returns a list of all subway route IDs which we'd like to show as branches.
-  """
-  @spec subway_branch_ids() :: [Route.id_t()]
-  def subway_branch_ids, do: @subway_branch_ids
-
-  @doc """
-  Returns a list of all subway line names.
-  """
-  @spec subway_line_names() :: [Route.id_t() | String.t()]
-  def subway_line_names, do: @subway_line_names
-
-  @doc """
-  Returns the list of all subway route IDs.
-  """
-  @spec subway_route_ids() :: [Route.id_t()]
-  def subway_route_ids, do: Map.values(@subway_line_route_map) |> List.flatten()
 end
